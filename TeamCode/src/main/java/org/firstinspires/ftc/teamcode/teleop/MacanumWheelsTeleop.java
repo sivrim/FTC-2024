@@ -80,7 +80,7 @@ public class MacanumWheelsTeleop {
      * @param y How much is the left joystick is pressed along y axis. Values have to be between 1 and -1
      * @param turn How much is the right joystick is pressed along x axis. Values have to be between 1 and -1
      */
-    public void move(double x, double y, double turn){
+    public void move(double y, double x, double turn){
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio,
         // but only if at least one is out of the range [-1, 1]
@@ -91,6 +91,11 @@ public class MacanumWheelsTeleop {
         double backRightPower = (y + x - turn) / denominator;
 
         double powerRatio = 0.7;
+
+
+        telemetry.addData("Mecanum","frontLeft %5.2f, backLeft %5.2f, frontRight %5.2f, backRight %5.2f ", frontLeftPower, backLeftPower, frontRightPower, backRightPower);
+        telemetry.update();
+
         frontLeftMotor.setPower(powerRatio * frontLeftPower);
         backLeftMotor.setPower(powerRatio * backLeftPower);
         frontRightMotor.setPower(powerRatio * frontRightPower);
