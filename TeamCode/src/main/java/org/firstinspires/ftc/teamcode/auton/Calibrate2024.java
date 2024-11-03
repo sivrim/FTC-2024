@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.DeviceNames;
 
-@Autonomous(name="Calibrate", group="chad")
-public class Calibrate2024 extends LinearOpMode{
+@Autonomous(name = "Calibrate", group = "furious_frog_2024")
+public class Calibrate2024 extends LinearOpMode {
     //
     DcMotor frontleft;
     DcMotor frontright;
@@ -22,6 +22,7 @@ public class Calibrate2024 extends LinearOpMode{
     Double bias = 0.8;//adjust until your robot goes 20 inches
     //
     Double conversion = cpi * bias;
+
     //
     public void runOpMode() {
         //
@@ -38,6 +39,7 @@ public class Calibrate2024 extends LinearOpMode{
         moveToPosition(20, .2);//Don't change this line, unless you want to calibrate with different speeds
         //
     }
+
     //
     /*
     This function's purpose is simply to drive forward or backward.

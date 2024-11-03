@@ -1,39 +1,45 @@
 package org.firstinspires.ftc.teamcode.auton;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.DeviceNames;
 
-@Autonomous(name="auton_2024", group="furious_frog_2024")
+/**
+ * Works for Mecanum
+ * <p>
+ * Ensure all 4 motors are of the same configuration (SKU 5203-2402-0019)
+ * <p>
+ * Ensure all motors have encoders connected
+ * <p>
+ * Ensure wheels are configured in X shape
+ * <p>
+ * Measure width and change if needed
+ */
+@Autonomous(name = "auton_2024", group = "furious_frog_2024")
 public class Auton2024 extends LinearOpMode {
-    DcMotor frontleft;
-    DcMotor frontright;
-    DcMotor backleft;
-    DcMotor backright;
+    DcMotor frontLeft;
+    DcMotor frontRight;
+    DcMotor backLeft;
+    DcMotor backRight;
 
     //28 * 20 / (2ppi * 4.125)
-    //chassis width
+    //chassis width. Normally used for turn. Ignore if only forward/strafing motion is needed
     Double width = 16.0; //inches
+
     //See encoder resolution https://www.gobilda.com/5203-series-yellow-jacket-planetary-gear-motor-19-2-1-ratio-24mm-length-8mm-rex-shaft-312-rpm-3-3-5v-encoder/?srsltid=AfmBOoruBKEaSkcIwfFpy1t6rZOtf4fzb0cfTNLmTL8Pr3JVCrC2-ln3
     //this is encoder pulse per rotation on the motor. The value 537.7 shown on web-site is after multiplying by gear-ratio
     Integer cpr = 28; //counts per rotation
+    //Mentioned in "Gear Ratio" section of above link
     Double gearRatio = 19.2;
     //diameter of wheel in inches
     Double diameter = 3.77;
-    Double cpi = (cpr * gearRatio)/(Math.PI * diameter); //counts per inch, 28cpr * gear ratio / (2 * pi * diameter (in inches, in the center))
-    //this will be measured after calibration. This is to counteract friction etc.
-    Double bias = 0.8;//default 0.8
-    Double meccyBias = 0.9;//change to adjust only strafing movement
+    Double cpi = (cpr * gearRatio) / (Math.PI * diameter); //counts per inch, 28cpr * gear ratio / (2 * pi * diameter (in inches, in the center))
+
+    Double bias = 0.8;//this will be measured after calibration. This is to counteract friction etc.
+    Double strafeBias = 0.9;//change to adjust only strafing movement
     //
     Double conversion = cpi * bias;
     Boolean exit = false;
@@ -41,55 +47,55 @@ public class Auton2024 extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        frontleft = hardwareMap.dcMotor.get(DeviceNames.MOTOR_FRONT_LEFT);
-        frontright = hardwareMap.dcMotor.get(DeviceNames.MOTOR_FRONT_RIGHT);
-        backleft = hardwareMap.dcMotor.get(DeviceNames.MOTOR_BACK_LEFT);
-        backright = hardwareMap.dcMotor.get(DeviceNames.MOTOR_BACK_RIGHT);
-        frontright.setDirection(DcMotorSimple.Direction.REVERSE);//If your robot goes backward, switch this from right to left
-        backright.setDirection(DcMotorSimple.Direction.REVERSE);//If your robot goes backward, switch this from right to left
-        //
+        frontLeft = hardwareMap.dcMotor.get(DeviceNames.MOTOR_FRONT_LEFT);
+        frontRight = hardwareMap.dcMotor.get(DeviceNames.MOTOR_FRONT_RIGHT);
+        backLeft = hardwareMap.dcMotor.get(DeviceNames.MOTOR_BACK_LEFT);
+        backRight = hardwareMap.dcMotor.get(DeviceNames.MOTOR_BACK_RIGHT);
+
+        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);//If your robot goes backward, switch this from right to left
+        backRight.setDirection(DcMotorSimple.Direction.REVERSE);//If your robot goes backward, switch this from right to left
+
         waitForStart();
-        //
+
         moveToPosition(20, .2);//Don't change this line, unless you want to calibrate with different speeds
-        //
     }
 
     /*
   This function's purpose is simply to drive forward or backward.
   To drive backward, simply make the inches input negative.
    */
-    public void moveToPosition(double inches, double speed){
+    public void moveToPosition(double inches, double speed) {
         //
-        int move = (int)(Math.round(inches * conversion));
+        int move = (int) (Math.round(inches * conversion));
         //
-        backleft.setTargetPosition(backleft.getCurrentPosition() + move);
-        frontleft.setTargetPosition(frontleft.getCurrentPosition() + move);
-        backright.setTargetPosition(backright.getCurrentPosition() + move);
-        frontright.setTargetPosition(frontright.getCurrentPosition() + move);
+        backLeft.setTargetPosition(backLeft.getCurrentPosition() + move);
+        frontLeft.setTargetPosition(frontLeft.getCurrentPosition() + move);
+        backRight.setTargetPosition(backRight.getCurrentPosition() + move);
+        frontRight.setTargetPosition(frontRight.getCurrentPosition() + move);
         //
-        frontleft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        frontright.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backleft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backright.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //
-        frontleft.setPower(speed);
-        backleft.setPower(speed);
-        frontright.setPower(speed);
-        backright.setPower(speed);
+        frontLeft.setPower(speed);
+        backLeft.setPower(speed);
+        frontRight.setPower(speed);
+        backRight.setPower(speed);
         //
-        while (frontleft.isBusy() && frontright.isBusy() && backleft.isBusy() && backright.isBusy()){
-            if (exit){
-                frontright.setPower(0);
-                frontleft.setPower(0);
-                backright.setPower(0);
-                backleft.setPower(0);
+        while (frontLeft.isBusy() && frontRight.isBusy() && backLeft.isBusy() && backRight.isBusy()) {
+            if (exit) {
+                frontRight.setPower(0);
+                frontLeft.setPower(0);
+                backRight.setPower(0);
+                backLeft.setPower(0);
                 return;
             }
         }
-        frontright.setPower(0);
-        frontleft.setPower(0);
-        backright.setPower(0);
-        backleft.setPower(0);
+        frontRight.setPower(0);
+        frontLeft.setPower(0);
+        backRight.setPower(0);
+        backLeft.setPower(0);
         return;
     }
 
@@ -97,30 +103,31 @@ public class Auton2024 extends LinearOpMode {
    This function uses the encoders to strafe left or right.
    Negative input for inches results in left strafing.
     */
-    public void strafeToPosition(double inches, double speed){
+    public void strafeToPosition(double inches, double speed) {
         //
-        int move = (int)(Math.round(inches * cpi * meccyBias));
+        int move = (int) (Math.round(inches * cpi * strafeBias));
         //
-        backleft.setTargetPosition(backleft.getCurrentPosition() - move);
-        frontleft.setTargetPosition(frontleft.getCurrentPosition() + move);
-        backright.setTargetPosition(backright.getCurrentPosition() + move);
-        frontright.setTargetPosition(frontright.getCurrentPosition() - move);
+        backLeft.setTargetPosition(backLeft.getCurrentPosition() - move);
+        frontLeft.setTargetPosition(frontLeft.getCurrentPosition() + move);
+        backRight.setTargetPosition(backRight.getCurrentPosition() + move);
+        frontRight.setTargetPosition(frontRight.getCurrentPosition() - move);
         //
-        frontleft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        frontright.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backleft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backright.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //
-        frontleft.setPower(speed);
-        backleft.setPower(speed);
-        frontright.setPower(speed);
-        backright.setPower(speed);
+        frontLeft.setPower(speed);
+        backLeft.setPower(speed);
+        frontRight.setPower(speed);
+        backRight.setPower(speed);
         //
-        while (frontleft.isBusy() && frontright.isBusy() && backleft.isBusy() && backright.isBusy()){}
-        frontright.setPower(0);
-        frontleft.setPower(0);
-        backright.setPower(0);
-        backleft.setPower(0);
+        while (frontLeft.isBusy() && frontRight.isBusy() && backLeft.isBusy() && backRight.isBusy()) {
+        }
+        frontRight.setPower(0);
+        frontLeft.setPower(0);
+        backRight.setPower(0);
+        backLeft.setPower(0);
         return;
     }
 }
