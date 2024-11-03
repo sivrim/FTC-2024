@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class MacanumWheelsAuton {
+public class MecanumWheelsAuton {
     public DcMotorEx frontLeftMotor = null;
     public DcMotorEx backLeftMotor = null;
     public DcMotorEx frontRightMotor = null;
@@ -25,7 +25,7 @@ public class MacanumWheelsAuton {
     static final double     DRIVE_SPEED             = 0.6;
     static final double     TURN_SPEED              = 0.5;
 
-    public MacanumWheelsAuton(HardwareMap hardwareMap, Telemetry telemetry) {
+    public MecanumWheelsAuton(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
         frontLeftMotor = (DcMotorEx) hardwareMap.dcMotor.get(DeviceNames.MOTOR_FRONT_LEFT);
         backLeftMotor = (DcMotorEx) hardwareMap.dcMotor.get(DeviceNames.MOTOR_BACK_LEFT);

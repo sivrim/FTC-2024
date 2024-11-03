@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.util.Size;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -9,10 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
-
-import java.util.List;
 
 @Autonomous(name = "AutoFF", group = "Furious Frogs")
 @Disabled
@@ -22,7 +17,7 @@ public class OpModeAuto extends LinearOpMode {
     DcMotor armMotor = null;
     private ElapsedTime runtime = new ElapsedTime();
     private VisionPortal visionPortal;
-    MacanumWheelsAuton wheels;
+    MecanumWheelsAuton wheels;
     Servo clawServo;
     DcMotor armMotor2;
 
@@ -31,7 +26,7 @@ public class OpModeAuto extends LinearOpMode {
         try {
             initTfod();
 
-            wheels = new MacanumWheelsAuton(hardwareMap, telemetry);
+            wheels = new MecanumWheelsAuton(hardwareMap, telemetry);
             armMotor = hardwareMap.dcMotor.get("armMotor");
             clawServo = hardwareMap.servo.get("clawServo");
             armMotor2 = hardwareMap.dcMotor.get("armMotor2");
@@ -224,5 +219,7 @@ public class OpModeAuto extends LinearOpMode {
             sleep(1);
         }
     }
+
+
 
 }

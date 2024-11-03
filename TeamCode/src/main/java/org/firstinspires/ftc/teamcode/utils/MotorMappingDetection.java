@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.MacanumWheelsAuton;
+import org.firstinspires.ftc.teamcode.MecanumWheelsAuton;
 
 @Autonomous(name="MotorMappingDetection", group="Furious Frog")
 @Disabled
@@ -18,7 +18,7 @@ public class MotorMappingDetection extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        MacanumWheelsAuton wheels = new MacanumWheelsAuton(hardwareMap, telemetry);
+        MecanumWheelsAuton wheels = new MecanumWheelsAuton(hardwareMap, telemetry);
         DcMotor armMotor = hardwareMap.dcMotor.get("armMotor");
 
         // Send telemetry message to signify robot waiting;
@@ -40,7 +40,7 @@ public class MotorMappingDetection extends LinearOpMode {
         wheels.stop();
     }
 
-    private void moveOneMotor(MacanumWheelsAuton wheels, DcMotor motor, String motorName) {
+    private void moveOneMotor(MecanumWheelsAuton wheels, DcMotor motor, String motorName) {
         while (opModeIsActive() && (runtime.seconds() < 3)) {
             telemetry.addData("Moving", motorName);
             motor.setPower(1);

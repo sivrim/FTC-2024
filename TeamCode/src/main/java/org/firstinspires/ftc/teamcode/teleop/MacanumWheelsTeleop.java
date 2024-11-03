@@ -90,7 +90,7 @@ public class MacanumWheelsTeleop {
         double frontRightPower = (y - x - turn) / denominator;
         double backRightPower = (y + x - turn) / denominator;
 
-        double powerRatio = 0.7;
+        double powerRatio = 1.0;
 
 
         telemetry.addData("Mecanum","frontLeft %5.2f, backLeft %5.2f, frontRight %5.2f, backRight %5.2f ", frontLeftPower, backLeftPower, frontRightPower, backRightPower);
