@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.DeviceNames;
 
+import java.util.logging.Logger;
+
 /**
  * Works for Mecanum
  * <p>
@@ -25,6 +27,8 @@ public class Auton2024 extends LinearOpMode {
     DcMotor backLeft;
     DcMotor backRight;
 
+    Logger logger = Logger.getLogger("auton");
+
     //28 * 20 / (2ppi * 4.125)
     //chassis width. Normally used for turn. Ignore if only forward/strafing motion is needed
     Double width = 16.0; //inches
@@ -38,8 +42,8 @@ public class Auton2024 extends LinearOpMode {
     Double diameter = 3.77;
     Double cpi = (cpr * gearRatio) / (Math.PI * diameter); //counts per inch, 28cpr * gear ratio / (2 * pi * diameter (in inches, in the center))
 
-    Double bias = 0.8;//this will be measured after calibration. This is to counteract friction etc.
-    Double strafeBias = 0.9;//change to adjust only strafing movement
+    Double bias = 0.75;//this will be measured after calibration. This is to counteract friction etc.
+    Double strafeBias = 0.8;//change to adjust only strafing movement
     //
     Double conversion = cpi * bias;
     Boolean exit = false;
@@ -52,12 +56,62 @@ public class Auton2024 extends LinearOpMode {
         backLeft = hardwareMap.dcMotor.get(DeviceNames.MOTOR_BACK_LEFT);
         backRight = hardwareMap.dcMotor.get(DeviceNames.MOTOR_BACK_RIGHT);
 
-        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);//If your robot goes backward, switch this from right to left
-        backRight.setDirection(DcMotorSimple.Direction.REVERSE);//If your robot goes backward, switch this from right to left
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);//If your robot goes backward, switch this from right to left
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);//If your robot goes backward, switch this from right to left
+
+        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         waitForStart();
 
-        moveToPosition(20, .2);//Don't change this line, unless you want to calibrate with different speeds
+//        moveToPosition(frontLeft, 3, .5);
+//
+//        sleep(3000);
+//        moveToPosition(frontRight, 3, .5);
+//
+//        sleep(3000);
+//
+//        moveToPosition(backRight, 3, .5);
+//
+//        sleep(3000);
+//
+//        moveToPosition(backLeft, 3, .5);
+
+        strafeToPosition(20, .3);//Don't change this line, unless you want to calibrate with different speeds
+
+        sleep(5000);
+//
+//        strafeToPosition(2, .2);//Don't change this line, unless you want to calibrate with different speeds
+
+//        sleep(5000);
+//
+//        strafeToPosition(30, .2);//Don't change this line, unless you want to calibrate with different speeds
+
+    }
+
+    public void moveToPosition(DcMotor motor, long inches, double speed) {
+        //
+        int move = (int) (Math.round(inches * conversion));
+        //
+        motor.setTargetPosition(backLeft.getCurrentPosition() + move);
+
+        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motor.setPower(speed);
+        while (motor.isBusy()) {
+            if (exit) {
+                motor.setPower(0);
+
+                return;
+            }
+        }
+        motor.setPower(0);
+
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        return;
     }
 
     /*
@@ -106,11 +160,25 @@ public class Auton2024 extends LinearOpMode {
     public void strafeToPosition(double inches, double speed) {
         //
         int move = (int) (Math.round(inches * cpi * strafeBias));
+
+        logger.warning("auton0 --" + move);
         //
+
+        logger.warning("Auton-- " + backLeft.getCurrentPosition());
+        logger.warning("Auton-- " + backRight.getCurrentPosition());
+        logger.warning("Auton-- " + frontLeft.getCurrentPosition());
+        logger.warning("Auton-- " + frontRight.getCurrentPosition());
+
         backLeft.setTargetPosition(backLeft.getCurrentPosition() - move);
         frontLeft.setTargetPosition(frontLeft.getCurrentPosition() + move);
         backRight.setTargetPosition(backRight.getCurrentPosition() + move);
         frontRight.setTargetPosition(frontRight.getCurrentPosition() - move);
+
+        logger.warning("Auton2-- " + backLeft.getTargetPosition());
+        logger.warning("Auton2-- " + backRight.getTargetPosition());
+        logger.warning("Auton2-- " + frontLeft.getTargetPosition());
+        logger.warning("Auton2-- " + frontRight.getTargetPosition());
+
         //
         frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -124,6 +192,12 @@ public class Auton2024 extends LinearOpMode {
         //
         while (frontLeft.isBusy() && frontRight.isBusy() && backLeft.isBusy() && backRight.isBusy()) {
         }
+
+        logger.warning("Auton3-- " + backLeft.getCurrentPosition());
+        logger.warning("Auton3-- " + backRight.getCurrentPosition());
+        logger.warning("Auton3-- " + frontLeft.getCurrentPosition());
+        logger.warning("Auton3-- " + frontRight.getCurrentPosition());
+
         frontRight.setPower(0);
         frontLeft.setPower(0);
         backRight.setPower(0);

@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Second chassis only has 4 dc motors. No arm motor or any other servo.
  */
-@TeleOp(name = "TeleopBaseChassis", group = "Furious Frog")
+@TeleOp(name = "TeleopBaseChassis", group = "FuriousFrogs24")
 public class OpModeBaseChassisTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
