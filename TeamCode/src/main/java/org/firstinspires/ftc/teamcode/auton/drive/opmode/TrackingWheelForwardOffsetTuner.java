@@ -12,8 +12,8 @@ import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.system.Misc;
-import org.firstinspires.ftc.teamcode.auton.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.auton.drive.StandardTrackingWheelLocalizer;
+import org.firstinspires.ftc.teamcode.auton.drive.SampleMecanumDrive;
 
 /**
  * This routine determines the effective forward offset for the lateral tracking wheel.

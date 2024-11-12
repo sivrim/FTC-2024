@@ -17,13 +17,13 @@ import com.acmerobotics.roadrunner.trajectory.TrajectoryMarker;
 import com.acmerobotics.roadrunner.util.NanoClock;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
-import org.firstinspires.ftc.teamcode.auton.util.DashboardUtil;
-import org.firstinspires.ftc.teamcode.auton.util.LogFiles;
-import org.firstinspires.ftc.teamcode.auton.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.auton.trajectorysequence.sequencesegment.SequenceSegment;
 import org.firstinspires.ftc.teamcode.auton.trajectorysequence.sequencesegment.TrajectorySegment;
 import org.firstinspires.ftc.teamcode.auton.trajectorysequence.sequencesegment.TurnSegment;
 import org.firstinspires.ftc.teamcode.auton.trajectorysequence.sequencesegment.WaitSegment;
+import org.firstinspires.ftc.teamcode.auton.drive.DriveConstants;
+import org.firstinspires.ftc.teamcode.auton.util.DashboardUtil;
+import org.firstinspires.ftc.teamcode.auton.util.LogFiles;
 
 import java.util.ArrayList;
 import java.util.Collections;

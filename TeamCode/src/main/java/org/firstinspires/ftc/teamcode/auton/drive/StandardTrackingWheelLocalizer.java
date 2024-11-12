@@ -29,19 +29,14 @@ import java.util.List;
  */
 @Config
 public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer {
-    //copied from https://www.gobilda.com/swingarm-odometry-pod-48mm-wheel/?srsltid=AfmBOornkcHyeGvkNrrewYYHbajbadFXsurIn_iwA2b_VCRhD6z5YVvL
     public static double TICKS_PER_REV = 2000;
     public static double WHEEL_RADIUS = .95; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    //TODO
-    public static double LATERAL_DISTANCE = 12.455; // in; distance between the left and right wheels
-    //TODO . Negative if in the back. the distance from the center of rotation to the middle wheel.
+    public static double LATERAL_DISTANCE = 12.38; // in; distance between the left and right wheels
     public static double FORWARD_OFFSET = 1; // in; offset of the lateral wheel
-
-    public static double X_MULTIPLIER = 1.01; // Multiplier in the X direction
-    public static double Y_MULTIPLIER = 1.014; // Multiplier in the Y direction
-
+    public static double X_MULTIPLIER = 1; // Multiplier in the X direction
+    public static double Y_MULTIPLIER = 1; // Multiplier in the Y direction
     private Encoder leftEncoder, rightEncoder, frontEncoder;
 
     private List<Integer> lastEncPositions, lastEncVels;
@@ -62,7 +57,11 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
         frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, DeviceNames.MOTOR_BACK_RIGHT));//"frontEncoder"
 
         // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
+        leftEncoder.setDirection(Encoder.Direction.REVERSE);
+        rightEncoder.setDirection(Encoder.Direction.REVERSE);
+
         frontEncoder.setDirection(Encoder.Direction.REVERSE);
+
     }
 
     public static double encoderTicksToInches(double ticks) {
@@ -82,8 +81,8 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
         lastEncPositions.add(frontPos);
 
         return Arrays.asList(
-                encoderTicksToInches(leftPos) *X_MULTIPLIER,
-                encoderTicksToInches(rightPos) *X_MULTIPLIER,
+                encoderTicksToInches(leftPos) * X_MULTIPLIER,
+                encoderTicksToInches(rightPos) * X_MULTIPLIER,
                 encoderTicksToInches(frontPos) * Y_MULTIPLIER
         );
     }
