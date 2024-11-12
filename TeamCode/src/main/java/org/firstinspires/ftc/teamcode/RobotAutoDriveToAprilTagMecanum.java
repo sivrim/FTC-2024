@@ -58,11 +58,11 @@ import java.util.concurrent.TimeUnit;
  */
 
 @TeleOp(name="Drive To AprilTag Mecanum", group = "Furious Frog")
-//@Disabled
+@Disabled
 public class RobotAutoDriveToAprilTagMecanum extends LinearOpMode
 {
     // Adjust these numbers to suit your robot.
-    final double DESIRED_DISTANCE = 12.0; //  this is how close the camera should get to the target (inches)
+    final double DESIRED_DISTANCE = 14.9; //  this is how close the camera should get to the target (inches)
 
     //  Set the GAIN constants to control the relationship between the measured position error, and how much power is
     //  applied to the drive motors to correct the error.
@@ -76,7 +76,7 @@ public class RobotAutoDriveToAprilTagMecanum extends LinearOpMode
     final double MAX_AUTO_TURN  = 0.3;   //  Clip the turn speed to this max value (adjust for your robot)
 
     private static final boolean USE_WEBCAM = true;  // Set true to use a webcam, or false for a phone camera
-    private static final int DESIRED_TAG_ID = 11;     // Choose the tag you want to approach or set to -1 for ANY tag.
+    private static final int DESIRED_TAG_ID = 13;     // Choose the tag you want to approach or set to -1 for ANY tag.
     private VisionPortal visionPortal;               // Used to manage the video source.
     private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
@@ -151,8 +151,8 @@ public class RobotAutoDriveToAprilTagMecanum extends LinearOpMode
 
                 // Determine heading, range and Yaw (tag image rotation) error so we can use them to control the robot automatically.
                 double  rangeError      = (desiredTag.ftcPose.range - DESIRED_DISTANCE);
-                double  headingError    = desiredTag.ftcPose.bearing;
-                double  yawError        = desiredTag.ftcPose.yaw;
+                double  headingError    = desiredTag.ftcPose.bearing ;
+                double  yawError        = desiredTag.ftcPose.yaw - 37;
 
                 // Use the speed and turn "gains" to calculate how we want the robot to move.
                 drive  = Range.clip(rangeError * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
@@ -166,7 +166,7 @@ public class RobotAutoDriveToAprilTagMecanum extends LinearOpMode
                 // drive using manual POV Joystick mode.  Slow things down to make the robot more controlable.
                 drive  = gamepad1.left_stick_y  / 2.0;  // Reduce drive rate to 50%.
                 strafe = gamepad1.left_stick_x  / 2.0;  // Reduce strafe rate to 50%.
-                turn   = gamepad1.right_stick_x / 3.0;  // Reduce turn rate to 33%.
+                turn   = -gamepad1.right_stick_x / 3.0;  // Reduce turn rate to 33%.
                 telemetry.addData("Manual","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
             }
             //telemetry.update();

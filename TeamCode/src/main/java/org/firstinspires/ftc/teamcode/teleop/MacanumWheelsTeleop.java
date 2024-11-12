@@ -34,7 +34,8 @@ public class MacanumWheelsTeleop {
         // If your robot moves backwards when commanded to go forwards,
         // reverse the left side instead.
         // See the note about this earlier on this page.
-        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
@@ -90,7 +91,7 @@ public class MacanumWheelsTeleop {
         double frontRightPower = (y - x - turn) / denominator;
         double backRightPower = (y + x - turn) / denominator;
 
-        double powerRatio = 0.7;
+        double powerRatio = 1.0;
 
 
         telemetry.addData("Mecanum","frontLeft %5.2f, backLeft %5.2f, frontRight %5.2f, backRight %5.2f ", frontLeftPower, backLeftPower, frontRightPower, backRightPower);
