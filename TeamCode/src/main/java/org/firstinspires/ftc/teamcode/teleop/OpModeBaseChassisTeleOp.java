@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -20,6 +21,7 @@ import java.util.List;
  * Second chassis only has 4 dc motors. No arm motor or any other servo.
  */
 @TeleOp(name = "TeleopBaseChassis", group = "FuriousFrogs24")
+@Config
 public class OpModeBaseChassisTeleOp extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -27,6 +29,11 @@ public class OpModeBaseChassisTeleOp extends LinearOpMode {
     Servo clawServo;
     Servo wristServo;
     DcMotor armMotor2;
+
+    public static double MAX_CLAW_OPEN = 0.2;
+    public static double MAX_CLAW_CLOSE = 0.8;
+    public static double MAX_WRIST_OPEN = 0.2;
+    public static double MAX_WRIST_CLOSE = 0.8;
 
 
     @Override
@@ -46,19 +53,46 @@ public class OpModeBaseChassisTeleOp extends LinearOpMode {
 
         wristServo = hardwareMap.servo.get(DeviceNames.SERVO_WRIST);
 
+        // Reset the motor encoder so that it reads zero ticks
+        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER
+        armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        // Reset the motor encoder so that it reads zero ticks
+        armMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER
+        armMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         waitForStart();
 
         if (isStopRequested()) return;
+
+        clawServo.setPosition(MAX_CLAW_OPEN);
+        wristServo.setPosition(MAX_WRIST_OPEN);
+
 
         while (opModeIsActive()) {
             double chassisY = getChassisY();
             double chassisX = getChassisX();
             double chassisTurn = gamepad1.right_stick_x;
 
+            // Show the position of the motor on telemetry
+            telemetry.addData("arm motor 1 ", armMotor.getCurrentPosition());
+            telemetry.addData("arm motor 2 ", armMotor2.getCurrentPosition());
+            telemetry.update();
+
             armMotor.setPower(gamepad2.left_stick_x);
             armMotor2.setPower(gamepad2.left_stick_y);
-            clawServo.setPosition(gamepad2.left_trigger);
-            wristServo.setPosition(gamepad2.right_trigger);
+
+            if(gamepad2.left_trigger > 0){
+                clawServo.setPosition(MAX_CLAW_CLOSE);
+            } else  if(gamepad2.left_bumper){
+                clawServo.setPosition(MAX_CLAW_OPEN);
+            }
+            if(gamepad2.right_trigger > 0){
+                wristServo.setPosition(MAX_WRIST_CLOSE);
+            } else  if(gamepad2.right_bumper){
+                wristServo.setPosition(MAX_WRIST_OPEN);
+            }
 
             if (gamepad2.x) {
                 armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
