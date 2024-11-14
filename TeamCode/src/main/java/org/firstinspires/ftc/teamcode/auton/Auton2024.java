@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.auton;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -21,6 +22,7 @@ import java.util.logging.Logger;
  * Measure width and change if needed
  */
 @Autonomous(name = "auton_2024", group = "furious_frog_2024")
+@Disabled
 public class Auton2024 extends LinearOpMode {
     DcMotor frontLeft;
     DcMotor frontRight;
