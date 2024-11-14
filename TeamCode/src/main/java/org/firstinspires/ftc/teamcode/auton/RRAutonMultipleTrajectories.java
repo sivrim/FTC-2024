@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.auton.drive.SampleMecanumDrive;
 @Autonomous(group = "ff")
 public class RRAutonMultipleTrajectories extends LinearOpMode {
     public static double FORWARD_1 = 6;
-    public static double STRAFE_LEFT = 18;
+    public static double STRAFE_LEFT_GO_TO_BASKET = 20;
     public static double TURN_90 = 90;
     public static double TURN_135 = 135;
     public static double TURN_M45 = -45;
@@ -26,6 +26,12 @@ public class RRAutonMultipleTrajectories extends LinearOpMode {
     public static double ARM1_POWER = 1.0;
 
     public static final double FORWARD_2 = 6;
+
+    public static double MAX_CLAW_OPEN = 0.2;
+    public static double MAX_CLAW_CLOSE = 0.8;
+    public static double MAX_WRIST_OPEN = 0.2;
+    public static double MAX_WRIST_CLOSE = 0.8;
+
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -41,7 +47,7 @@ public class RRAutonMultipleTrajectories extends LinearOpMode {
         armMotor = hardwareMap.get(DcMotor.class, DeviceNames.MOTOR_ARM);
         armMotor2 = hardwareMap.get(DcMotor.class, DeviceNames.MOTOR_ARM2);
         clawServo = hardwareMap.get(Servo.class, DeviceNames.SERVO_CLAW);
-
+        clawServo.setPosition(MAX_CLAW_CLOSE);
         wristServo = hardwareMap.get(Servo.class, DeviceNames.SERVO_WRIST);
 
         Trajectory trajectory1 = drive.trajectoryBuilder(new Pose2d())
@@ -49,7 +55,7 @@ public class RRAutonMultipleTrajectories extends LinearOpMode {
                 .build();
 
         Trajectory trajectory2 = drive.trajectoryBuilder(trajectory1.end())
-                .strafeLeft(STRAFE_LEFT)
+                .strafeLeft(STRAFE_LEFT_GO_TO_BASKET)
                 .build();
 
         Trajectory trajectory3 = drive.trajectoryBuilder(trajectory2.end())
