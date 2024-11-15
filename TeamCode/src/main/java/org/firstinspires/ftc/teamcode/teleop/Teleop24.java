@@ -76,7 +76,7 @@ public class Teleop24 extends LinearOpMode {
             telemetry.update();
 
             armMotor.setPower(gamepad2.left_stick_y);
-            armMotor2.setPower(gamepad2.right_stick_y);
+            armMotor2.setPower(-1 * gamepad2.right_stick_y);
 
             if(gamepad2.left_trigger > 0){
                 clawServo.setPosition(MAX_CLAW_CLOSE);
@@ -84,9 +84,20 @@ public class Teleop24 extends LinearOpMode {
                 clawServo.setPosition(MAX_CLAW_OPEN);
             }
 
+            /**
+             *                                                              Wrist
+             */
+
             if(gamepad2.dpad_up){
                 wristServo.setPosition(MAX_WRIST_CLOSE);
             } else  if(gamepad2.dpad_down){
+                wristServo.setPosition(MAX_WRIST_OPEN);
+            }
+
+
+            if(gamepad1.x){
+                wristServo.setPosition(MAX_WRIST_CLOSE);
+            } else  if(gamepad1.b){
                 wristServo.setPosition(MAX_WRIST_OPEN);
             }
 
