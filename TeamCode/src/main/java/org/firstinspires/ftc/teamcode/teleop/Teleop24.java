@@ -7,22 +7,18 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.DeviceNames;
-import org.firstinspires.ftc.teamcode.MecanumWheelsAuton;
-import org.firstinspires.ftc.vision.VisionPortal;
 
 import java.util.List;
 
 /**
  * Second chassis only has 4 dc motors. No arm motor or any other servo.
  */
-@TeleOp(name = "TeleopBaseChassis", group = "FuriousFrogs24")
+@TeleOp(name = "AATeleop", group = "aaa")
 @Config
-public class OpModeBaseChassisTeleOp extends LinearOpMode {
+public class Teleop24 extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     DcMotor armMotor = null;
@@ -30,9 +26,9 @@ public class OpModeBaseChassisTeleOp extends LinearOpMode {
     Servo wristServo;
     DcMotor armMotor2;
 
-    public static double MAX_CLAW_OPEN = 0.2;
+    public static double MAX_CLAW_OPEN = 0.25;
     public static double MAX_CLAW_CLOSE = 0.8;
-    public static double MAX_WRIST_OPEN = 0.2;
+    public static double MAX_WRIST_OPEN = 1.0;
     public static double MAX_WRIST_CLOSE = 0.8;
 
 
