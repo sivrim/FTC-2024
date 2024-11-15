@@ -28,8 +28,8 @@ public class Teleop24 extends LinearOpMode {
 
     public static double MAX_CLAW_OPEN = 0.25;
     public static double MAX_CLAW_CLOSE = 0.8;
-    public static double MAX_WRIST_OPEN = 1.0;
-    public static double MAX_WRIST_CLOSE = 0.8;
+    public static double MAX_WRIST_OPEN = .15;
+    public static double MAX_WRIST_CLOSE = 0.75;
 
 
     @Override
@@ -65,7 +65,6 @@ public class Teleop24 extends LinearOpMode {
         clawServo.setPosition(MAX_CLAW_OPEN);
         wristServo.setPosition(MAX_WRIST_OPEN);
 
-
         while (opModeIsActive()) {
             double chassisY = getChassisY();
             double chassisX = getChassisX();
@@ -76,17 +75,18 @@ public class Teleop24 extends LinearOpMode {
             telemetry.addData("arm motor 2 ", armMotor2.getCurrentPosition());
             telemetry.update();
 
-            armMotor.setPower(gamepad2.left_stick_x);
-            armMotor2.setPower(gamepad2.left_stick_y);
+            armMotor.setPower(gamepad2.left_stick_y);
+            armMotor2.setPower(gamepad2.right_stick_y);
 
             if(gamepad2.left_trigger > 0){
                 clawServo.setPosition(MAX_CLAW_CLOSE);
             } else  if(gamepad2.left_bumper){
                 clawServo.setPosition(MAX_CLAW_OPEN);
             }
-            if(gamepad2.right_trigger > 0){
+
+            if(gamepad2.dpad_up){
                 wristServo.setPosition(MAX_WRIST_CLOSE);
-            } else  if(gamepad2.right_bumper){
+            } else  if(gamepad2.dpad_down){
                 wristServo.setPosition(MAX_WRIST_OPEN);
             }
 

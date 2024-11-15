@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.auton.drive.SampleMecanumDrive;
 @Config
 @Autonomous(group = "aaa")
 public class AAuton24Left extends LinearOpMode {
-    public static double FORWARD_1 = 6;
+    public static double FORWARD_FROM_START = 6;
     public static double STRAFE_LEFT_GO_TO_BASKET = 18;
     public static int ARM_1_MOVE_BACK_1_ANGLE = 90;
     public static int ARM_2_MOVE_BACK_1_ANGLE = 120;
@@ -57,7 +57,7 @@ public class AAuton24Left extends LinearOpMode {
         wristServo.setPosition(MAX_WRIST_CLOSE);
 
         Trajectory trajectory1 = drive.trajectoryBuilder(new Pose2d())
-                .forward(FORWARD_1)
+                .forward(FORWARD_FROM_START)
                 .build();
 
         Trajectory trajectory2 = drive.trajectoryBuilder(trajectory1.end())
