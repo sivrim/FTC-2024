@@ -7,22 +7,18 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.DeviceNames;
-import org.firstinspires.ftc.teamcode.MecanumWheelsAuton;
-import org.firstinspires.ftc.vision.VisionPortal;
 
 import java.util.List;
 
 /**
  * Second chassis only has 4 dc motors. No arm motor or any other servo.
  */
-@TeleOp(name = "TeleopBaseChassis", group = "FuriousFrogs24")
+@TeleOp(name = "AATeleop", group = "aaa")
 @Config
-public class OpModeBaseChassisTeleOp extends LinearOpMode {
+public class Teleop24 extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     DcMotor armMotor = null;
@@ -30,10 +26,10 @@ public class OpModeBaseChassisTeleOp extends LinearOpMode {
     Servo wristServo;
     DcMotor armMotor2;
 
-    public static double MAX_CLAW_OPEN = 0.2;
+    public static double MAX_CLAW_OPEN = 0.25;
     public static double MAX_CLAW_CLOSE = 0.8;
-    public static double MAX_WRIST_OPEN = 0.2;
-    public static double MAX_WRIST_CLOSE = 0.8;
+    public static double MAX_WRIST_OPEN = .15;
+    public static double MAX_WRIST_CLOSE = 0.75;
 
 
     @Override
@@ -69,7 +65,6 @@ public class OpModeBaseChassisTeleOp extends LinearOpMode {
         clawServo.setPosition(MAX_CLAW_OPEN);
         wristServo.setPosition(MAX_WRIST_OPEN);
 
-
         while (opModeIsActive()) {
             double chassisY = getChassisY();
             double chassisX = getChassisX();
@@ -80,17 +75,29 @@ public class OpModeBaseChassisTeleOp extends LinearOpMode {
             telemetry.addData("arm motor 2 ", armMotor2.getCurrentPosition());
             telemetry.update();
 
-            armMotor.setPower(gamepad2.left_stick_x);
-            armMotor2.setPower(gamepad2.left_stick_y);
+            armMotor.setPower(gamepad2.left_stick_y);
+            armMotor2.setPower(-1 * gamepad2.right_stick_y);
 
             if(gamepad2.left_trigger > 0){
                 clawServo.setPosition(MAX_CLAW_CLOSE);
             } else  if(gamepad2.left_bumper){
                 clawServo.setPosition(MAX_CLAW_OPEN);
             }
-            if(gamepad2.right_trigger > 0){
+
+            /**
+             *                                                              Wrist
+             */
+
+            if(gamepad2.dpad_up){
                 wristServo.setPosition(MAX_WRIST_CLOSE);
-            } else  if(gamepad2.right_bumper){
+            } else  if(gamepad2.dpad_down){
+                wristServo.setPosition(MAX_WRIST_OPEN);
+            }
+
+
+            if(gamepad1.x){
+                wristServo.setPosition(MAX_WRIST_CLOSE);
+            } else  if(gamepad1.b){
                 wristServo.setPosition(MAX_WRIST_OPEN);
             }
 
