@@ -56,15 +56,15 @@ public class AAuton24Left extends LinearOpMode {
         wristServo = hardwareMap.get(Servo.class, DeviceNames.SERVO_WRIST);
         wristServo.setPosition(MAX_WRIST_CLOSE);
 
-        Trajectory trajectory1 = drive.trajectoryBuilder(new Pose2d())
+        Trajectory trajectoryForwardFromStart = drive.trajectoryBuilder(new Pose2d())
                 .forward(FORWARD_FROM_START)
                 .build();
 
-        Trajectory trajectory2 = drive.trajectoryBuilder(trajectory1.end())
+        Trajectory trajectoryStrafeLeftToBasket = drive.trajectoryBuilder(trajectoryForwardFromStart.end())
                 .strafeLeft(STRAFE_LEFT_GO_TO_BASKET)
                 .build();
 
-        Trajectory trajectory3 = drive.trajectoryBuilder(trajectory2.end())
+        Trajectory trajectory3 = drive.trajectoryBuilder(trajectoryStrafeLeftToBasket.end())
                 .forward(FORWARD_2)
                 .build();
 
@@ -76,9 +76,9 @@ public class AAuton24Left extends LinearOpMode {
 
         if(isStopRequested()) return;
 
-        drive.followTrajectory(trajectory1);
+        drive.followTrajectory(trajectoryForwardFromStart);
 
-        drive.followTrajectory(trajectory2);
+        drive.followTrajectory(trajectoryStrafeLeftToBasket);
 
         drive.turn(Math.toRadians(TURN_M45));
 
@@ -88,22 +88,15 @@ public class AAuton24Left extends LinearOpMode {
 
         moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_1_MOVE_BACK_1_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor);
         moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_2_MOVE_BACK_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2);
-        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_1_MOVE_BACK_2_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor);
         wristServo.setPosition(MAX_WRIST_OPEN);
-//        drive.turn(Math.toRadians(TURN_45));
-//
-//        drive.followTrajectory(trajectory3);
-//
-//        drive.followTrajectory(trajectory4);
-//
-//
-//        drive.turn(Math.toRadians(TURN_M45));
-//
-//        drive.turn(Math.toRadians(TURN_45));
-//
-//        drive.followTrajectory(trajectory3);
-//
-//        drive.followTrajectory(trajectory4);
+        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_1_MOVE_BACK_2_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor);
+        clawServo.setPosition(MAX_WRIST_OPEN);
+        wristServo.setPosition(MAX_WRIST_CLOSE);
+
+        //        drive.turn(Math.toRadians(TURN_45));
+        //        drive.followTrajectory(trajectory3);
+        //        drive.followTrajectory(trajectory4);
+
     }
 
     private void moveArmToPosition(DcMotorSimple.Direction dir, int encoderPos, DcMotor motor) {
