@@ -84,6 +84,12 @@ public class Teleop24 extends LinearOpMode {
                 clawServo.setPosition(MAX_CLAW_OPEN);
             }
 
+            if(gamepad1.left_trigger > 0){
+                clawServo.setPosition(MAX_CLAW_CLOSE);
+            } else  if(gamepad1.left_bumper){
+                clawServo.setPosition(MAX_CLAW_OPEN);
+            }
+
             /**
              *                                                              Wrist
              */
@@ -91,6 +97,12 @@ public class Teleop24 extends LinearOpMode {
             if(gamepad2.dpad_up){
                 wristServo.setPosition(MAX_WRIST_CLOSE);
             } else  if(gamepad2.dpad_down){
+                wristServo.setPosition(MAX_WRIST_OPEN);
+            }
+
+            if(gamepad1.dpad_up){
+                wristServo.setPosition(MAX_WRIST_CLOSE);
+            } else  if(gamepad1.dpad_down){
                 wristServo.setPosition(MAX_WRIST_OPEN);
             }
 
