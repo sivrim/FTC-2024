@@ -15,7 +15,7 @@ public class MacanumWheelsTeleop {
     public DcMotor frontRightMotor = null;
     public DcMotor backRightMotor = null;
     Telemetry telemetry;
-    public static double DOUBLE_RATIO = 0.7;
+    public static double POWER_RATIO = 0.4;
 
     public static  double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
     public static  double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // No External Gearing.
@@ -93,13 +93,13 @@ public class MacanumWheelsTeleop {
         double frontRightPower = (y - x - turn) / denominator;
         double backRightPower = (y + x - turn) / denominator;
 
-        telemetry.addData("Mecanum","frontLeft %5.2f, backLeft %5.2f, frontRight %5.2f, backRight %5.2f ", frontLeftPower, backLeftPower, frontRightPower, backRightPower);
-        telemetry.update();
+//        telemetry.addData("Mecanum","frontLeft %5.2f, backLeft %5.2f, frontRight %5.2f, backRight %5.2f ", frontLeftPower, backLeftPower, frontRightPower, backRightPower);
+//        telemetry.update();
 
-        frontLeftMotor.setPower(DOUBLE_RATIO * frontLeftPower);
-        backLeftMotor.setPower(DOUBLE_RATIO * backLeftPower);
-        frontRightMotor.setPower(DOUBLE_RATIO * frontRightPower);
-        backRightMotor.setPower(DOUBLE_RATIO * backRightPower);
+        frontLeftMotor.setPower(POWER_RATIO * frontLeftPower);
+        backLeftMotor.setPower(POWER_RATIO * backLeftPower);
+        frontRightMotor.setPower(POWER_RATIO * frontRightPower);
+        backRightMotor.setPower(POWER_RATIO * backRightPower);
     }
 
     public void setMode(DcMotor.RunMode mode){
@@ -127,10 +127,10 @@ public class MacanumWheelsTeleop {
         telemetry.update();
         sleep(1000);
 
-        frontLeftMotor.setPower(DOUBLE_RATIO * frontLeftPower);
-        backLeftMotor.setPower(DOUBLE_RATIO * backLeftPower);
-        frontRightMotor.setPower(DOUBLE_RATIO * frontRightPower);
-        backRightMotor.setPower(DOUBLE_RATIO * backRightPower);
+        frontLeftMotor.setPower(POWER_RATIO * frontLeftPower);
+        backLeftMotor.setPower(POWER_RATIO * backLeftPower);
+        frontRightMotor.setPower(POWER_RATIO * frontRightPower);
+        backRightMotor.setPower(POWER_RATIO * backRightPower);
 
         frontLeftMotor.setTargetPosition((int) targetTicks);
         backLeftMotor.setTargetPosition((int) targetTicks);
