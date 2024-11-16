@@ -30,8 +30,7 @@ public class Teleop24 extends LinearOpMode {
     public static double MAX_CLAW_CLOSE = 0.8;
     public static double MAX_WRIST_OPEN = .15;
     public static double MAX_WRIST_CLOSE = 0.75;
-
-    public static boolean ENABLE_GAMEPAD_2 = false;
+    public static boolean ENABLE_GAMEPAD_2 = true;
 
 
     @Override
@@ -73,7 +72,7 @@ public class Teleop24 extends LinearOpMode {
             double chassisTurn = gamepad1.right_stick_x;
 
             armMotor.setPower(gamepad2.left_stick_y);
-            armMotor2.setPower(-1 * gamepad2.right_stick_y * .8);
+            armMotor2.setPower(-1 * gamepad2.right_stick_y * 1);
 
             if(gamepad2.left_trigger > 0){
                 clawServo.setPosition(MAX_CLAW_CLOSE);
@@ -100,21 +99,21 @@ public class Teleop24 extends LinearOpMode {
             }
 
 
-            if(gamepad1.x){
-                wristServo.setPosition(MAX_WRIST_CLOSE);
-            } else  if(gamepad1.b){
-                wristServo.setPosition(MAX_WRIST_OPEN);
-            }
+//            if(gamepad1.x){
+//                wristServo.setPosition(MAX_WRIST_CLOSE);
+//            } else  if(gamepad1.b){
+//                wristServo.setPosition(MAX_WRIST_OPEN);
+//            }
 
             /**
              *                                                              Lock for hanging
              */
 
-//
-//            if (gamepad2.x) {
-//                armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//                armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//            }
+
+            if (gamepad2.x) {
+                armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            }
 
             wheels.move(chassisX, chassisY, chassisTurn);
 

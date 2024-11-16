@@ -13,15 +13,15 @@ public class ArmUp extends LinearOpMode {
 
     public static double MAX_CLAW_OPEN = 0.3;
     public static double MAX_CLAW_CLOSE = 0.5;
-    public static double MAX_WRIST_OPEN = 0.15;
-    public static double MAX_WRIST_CLOSE = 0.75;
+    public static double MAX_WRIST_OPEN = 1.0;
+    public static double MAX_WRIST_CLOSE = 0.1;
     public static double TURN_M45 = -45;
 
     public static double TURN_45 = 45;
 
-    public static int ARM_1_MOVE_BACK_1_ANGLE = 90;
-    public static int ARM_2_MOVE_BACK_1_ANGLE = 120;
-    public static int ARM_1_MOVE_BACK_2_ANGLE = 45;
+    public static int ARM_1_MOVE_BACK_1_ANGLE = 105;
+    public static int ARM_2_MOVE_BACK_1_ANGLE = 165;
+    public static int ARM_1_MOVE_BACK_2_ANGLE = 10;
     public static double ARM1_POWER = 1.0;
     public static double ARM2_POWER = 1.0;
 

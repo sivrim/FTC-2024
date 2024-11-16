@@ -4,7 +4,6 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -17,9 +16,9 @@ import org.firstinspires.ftc.teamcode.config.ArmUp;
 @Config
 @Autonomous(group = "aaa")
 public class AAuton24Left extends ArmUp {
-    public static double FORWARD_FROM_START = 6;
-    public static double STRAFE_LEFT_GO_TO_BASKET = 18;
-    public static final double FORWARD_2 = 6;
+    public static double FORWARD_FROM_START = 18;
+    public static double STRAFE_LEFT_GO_TO_BASKET = 8;
+    public static double BACK_2 = 15;
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -46,12 +45,8 @@ public class AAuton24Left extends ArmUp {
                 .strafeLeft(STRAFE_LEFT_GO_TO_BASKET)
                 .build();
 
-        Trajectory trajectory3 = drive.trajectoryBuilder(trajectoryStrafeLeftToBasket.end())
-                .forward(FORWARD_2)
-                .build();
-
-        Trajectory trajectory4 = drive.trajectoryBuilder(trajectory3.end())
-                .back(FORWARD_2)
+        Trajectory trajectoryGoBack = drive.trajectoryBuilder(trajectoryStrafeLeftToBasket.end())
+                .back(BACK_2)
                 .build();
 
         waitForStart();
@@ -71,9 +66,16 @@ public class AAuton24Left extends ArmUp {
         moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_1_MOVE_BACK_1_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
         moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_2_MOVE_BACK_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
         wristServo.setPosition(MAX_WRIST_OPEN);
+        sleep(1000);
         moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_1_MOVE_BACK_2_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
-        clawServo.setPosition(MAX_WRIST_OPEN);
+        sleep(1000);
         wristServo.setPosition(MAX_WRIST_CLOSE);
+        sleep(1000);
+        clawServo.setPosition(MAX_CLAW_OPEN);
+        sleep(1000);
+        wristServo.setPosition(MAX_WRIST_OPEN);
+
+        drive.followTrajectory(trajectoryGoBack);
 
         //        drive.turn(Math.toRadians(TURN_45));
         //        drive.followTrajectory(trajectory3);
