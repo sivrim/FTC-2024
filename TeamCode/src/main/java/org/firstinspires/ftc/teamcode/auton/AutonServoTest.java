@@ -17,12 +17,12 @@ import org.firstinspires.ftc.teamcode.auton.drive.SampleMecanumDrive;
 @Config
 @TeleOp(name = "AAutonServoTest", group = "aaa")
 public class AutonServoTest extends LinearOpMode {
-    public static double MAX_CLAW_OPEN = 0.2;
+    public static double MAX_CLAW_OPEN = 0.1;
     public static double MAX_CLAW_CLOSE = 1.0;
     public static double MAX_WRIST_OPEN = 0.0;
     public static double MAX_WRIST_CLOSE = 1.0;
 
-    public static boolean fineGrained = true;
+    public static boolean fineGrained = false;
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -32,14 +32,23 @@ public class AutonServoTest extends LinearOpMode {
     @Override
     public void runOpMode() {
         clawServo = hardwareMap.get(Servo.class, DeviceNames.SERVO_CLAW);
+
         wristServo = hardwareMap.get(Servo.class, DeviceNames.SERVO_WRIST);
 
+        telemetry.addData("clawservo", clawServo.getPosition());
+
         clawServo.setPosition(MAX_CLAW_CLOSE);
+        telemetry.addData("clawservo", clawServo.getPosition());
 
-        wristServo.setPosition(MAX_WRIST_CLOSE);
         sleep(2000);
+        clawServo.setPosition(MAX_CLAW_OPEN);
+        telemetry.addData("clawservo", clawServo.getPosition());
+        telemetry.update();
 
-        wristServo.setPosition(MAX_WRIST_OPEN);
+        sleep(2000);
+        wristServo.setPosition(MAX_WRIST_CLOSE);//in
+        sleep(2000);
+        wristServo.setPosition(MAX_WRIST_OPEN);//out
         sleep(2500);
 
         if(fineGrained){

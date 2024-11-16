@@ -130,10 +130,10 @@ public class MecanumWheelsAuton {
         setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower, powerRatio);
         runtime.reset();
         while (runtime.seconds() < 1.8 && isAnyMotorBusy()){
-            telemetry.addData("Currently at",  " at %7d :%7d :%7d :%7d",
-                    frontLeftMotor.getCurrentPosition(), frontRightMotor.getCurrentPosition(), backRightMotor.getCurrentPosition(), backLeftMotor.getCurrentPosition());
-            telemetry.addData("isbusy",  " at %s :%s :%s :%s",
-                    frontLeftMotor.isBusy(), frontRightMotor.isBusy(), backRightMotor.isBusy(), backLeftMotor.isBusy());
+//            telemetry.addData("Currently at",  " at %7d :%7d :%7d :%7d",
+//                    frontLeftMotor.getCurrentPosition(), frontRightMotor.getCurrentPosition(), backRightMotor.getCurrentPosition(), backLeftMotor.getCurrentPosition());
+//            telemetry.addData("isbusy",  " at %s :%s :%s :%s",
+//                    frontLeftMotor.isBusy(), frontRightMotor.isBusy(), backRightMotor.isBusy(), backLeftMotor.isBusy());
 
             sleep(300);
         }

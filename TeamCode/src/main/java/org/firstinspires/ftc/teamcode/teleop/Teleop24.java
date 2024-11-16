@@ -30,6 +30,7 @@ public class Teleop24 extends LinearOpMode {
     public static double MAX_CLAW_CLOSE = 0.8;
     public static double MAX_WRIST_OPEN = .15;
     public static double MAX_WRIST_CLOSE = 0.75;
+    public static boolean ENABLE_GAMEPAD_2 = true;
 
 
     @Override
@@ -70,13 +71,8 @@ public class Teleop24 extends LinearOpMode {
             double chassisX = getChassisX();
             double chassisTurn = gamepad1.right_stick_x;
 
-            // Show the position of the motor on telemetry
-            telemetry.addData("arm motor 1 ", armMotor.getCurrentPosition());
-            telemetry.addData("arm motor 2 ", armMotor2.getCurrentPosition());
-            telemetry.update();
-
             armMotor.setPower(gamepad2.left_stick_y);
-            armMotor2.setPower(-1 * gamepad2.right_stick_y);
+            armMotor2.setPower(-1 * gamepad2.right_stick_y * 1);
 
             if(gamepad2.left_trigger > 0){
                 clawServo.setPosition(MAX_CLAW_CLOSE);
@@ -84,9 +80,11 @@ public class Teleop24 extends LinearOpMode {
                 clawServo.setPosition(MAX_CLAW_OPEN);
             }
 
-            /**
-             *                                                              Wrist
-             */
+            if(gamepad1.left_trigger > 0){
+                clawServo.setPosition(MAX_CLAW_CLOSE);
+            } else  if(gamepad1.left_bumper){
+                clawServo.setPosition(MAX_CLAW_OPEN);
+            }
 
             if(gamepad2.dpad_up){
                 wristServo.setPosition(MAX_WRIST_CLOSE);
@@ -94,12 +92,23 @@ public class Teleop24 extends LinearOpMode {
                 wristServo.setPosition(MAX_WRIST_OPEN);
             }
 
-
-            if(gamepad1.x){
+            if(gamepad1.dpad_up){
                 wristServo.setPosition(MAX_WRIST_CLOSE);
-            } else  if(gamepad1.b){
+            } else  if(gamepad1.dpad_down){
                 wristServo.setPosition(MAX_WRIST_OPEN);
             }
+
+
+//            if(gamepad1.x){
+//                wristServo.setPosition(MAX_WRIST_CLOSE);
+//            } else  if(gamepad1.b){
+//                wristServo.setPosition(MAX_WRIST_OPEN);
+//            }
+
+            /**
+             *                                                              Lock for hanging
+             */
+
 
             if (gamepad2.x) {
                 armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -107,6 +116,22 @@ public class Teleop24 extends LinearOpMode {
             }
 
             wheels.move(chassisX, chassisY, chassisTurn);
+
+            // Show the position of the motor on telemetry
+            telemetry.addData("chassis  power ", chassisX + "" +  chassisY);
+            telemetry.addData("gamepad1.left_trigger ", gamepad1.left_trigger);
+            telemetry.addData("gamepad1.left_bumper ", gamepad1.left_bumper);
+
+            telemetry.addData("gamepad1.dpad_up ", gamepad1.dpad_up);
+            telemetry.addData("gamepad1.dpad_down ", gamepad1.dpad_down);
+
+            telemetry.addData("chassis  power ", chassisX + "" +  chassisY);
+            telemetry.addData("gamepad2.left_trigger ", gamepad2.left_trigger);
+            telemetry.addData("gamepad2.left_bumper ", gamepad2.left_bumper);
+
+            telemetry.addData("gamepad2.dpad_up ", gamepad2.dpad_up);
+            telemetry.addData("gamepad2.dpad_down ", gamepad2.dpad_down);
+
             telemetry.update();
 
         }
