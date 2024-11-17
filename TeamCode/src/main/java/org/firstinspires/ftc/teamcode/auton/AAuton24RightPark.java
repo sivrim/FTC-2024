@@ -17,13 +17,17 @@ import org.firstinspires.ftc.teamcode.auton.drive.SampleMecanumDrive;
 @Autonomous(group = "aaa")
 public class AAuton24RightPark extends LinearOpMode {
     public static double FORWARD_1 = 3;
-    public static double STRAFE_RIGHT = 20;
+    public static double STRAFE_RIGHT = 22;
     private ElapsedTime runtime = new ElapsedTime();
 
     DcMotor armMotor = null;
     Servo clawServo;
     Servo wristServo;
     DcMotor armMotor2;
+    public static double MAX_CLAW_OPEN = 0.1;
+    public static double MAX_CLAW_CLOSE = 1.0;
+    public static double MAX_WRIST_OPEN = 0.0;
+    public static double MAX_WRIST_CLOSE = 1.0;
 
 
     @Override
@@ -35,10 +39,17 @@ public class AAuton24RightPark extends LinearOpMode {
                 .build();
 
         Trajectory trajectory2 = drive.trajectoryBuilder(trajectory1.end())
-                .strafeLeft(STRAFE_RIGHT)
+                .strafeRight(STRAFE_RIGHT)
                 .build();
 
+        clawServo = hardwareMap.get(Servo.class, DeviceNames.SERVO_CLAW);
+        wristServo = hardwareMap.get(Servo.class, DeviceNames.SERVO_WRIST);
+        clawServo.setPosition(MAX_CLAW_CLOSE);
+
+        wristServo.setPosition(MAX_CLAW_CLOSE);
         waitForStart();
+        clawServo.setPosition(MAX_CLAW_CLOSE);
+        wristServo.setPosition(MAX_CLAW_CLOSE);
 
         if(isStopRequested()) return;
 

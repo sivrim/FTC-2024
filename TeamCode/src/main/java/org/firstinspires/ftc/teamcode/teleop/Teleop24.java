@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -28,8 +29,8 @@ public class Teleop24 extends LinearOpMode {
 
     public static double MAX_CLAW_OPEN = 0.25;
     public static double MAX_CLAW_CLOSE = 0.8;
-    public static double MAX_WRIST_OPEN = .15;
-    public static double MAX_WRIST_CLOSE = 0.75;
+    public static double MAX_WRIST_OPEN = 0.0;
+    public static double MAX_WRIST_CLOSE = 1.0;
     public static boolean ENABLE_GAMEPAD_2 = true;
 
 
@@ -38,10 +39,6 @@ public class Teleop24 extends LinearOpMode {
         // Make sure your ID's match your configuration
 
         List<HardwareMap.DeviceMapping<? extends HardwareDevice>> allDeviceMappings = hardwareMap.allDeviceMappings;
-
-        allDeviceMappings.forEach(d -> {
-            System.out.println(d.getDeviceTypeClass().getCanonicalName());
-        });
 
         MacanumWheelsTeleop wheels = new MacanumWheelsTeleop(hardwareMap, telemetry);
         armMotor = hardwareMap.dcMotor.get(DeviceNames.MOTOR_ARM);
@@ -52,19 +49,19 @@ public class Teleop24 extends LinearOpMode {
 
         // Reset the motor encoder so that it reads zero ticks
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER
-        armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        // Reset the motor encoder so that it reads zero ticks
         armMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        // Turn the motor back on, required if you use STOP_AND_RESET_ENCODER
+        armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         armMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        clawServo.setPosition(MAX_CLAW_CLOSE);
+        wristServo.setPosition(MAX_WRIST_CLOSE);
 
         waitForStart();
 
         if (isStopRequested()) return;
 
-        clawServo.setPosition(MAX_CLAW_OPEN);
-        wristServo.setPosition(MAX_WRIST_OPEN);
+        clawServo.setPosition(MAX_CLAW_CLOSE);
+        wristServo.setPosition(MAX_WRIST_CLOSE);
 
         while (opModeIsActive()) {
             double chassisY = getChassisY();
@@ -74,41 +71,11 @@ public class Teleop24 extends LinearOpMode {
             armMotor.setPower(gamepad2.left_stick_y);
             armMotor2.setPower(-1 * gamepad2.right_stick_y * 1);
 
-            if(gamepad2.left_trigger > 0){
-                clawServo.setPosition(MAX_CLAW_CLOSE);
-            } else  if(gamepad2.left_bumper){
-                clawServo.setPosition(MAX_CLAW_OPEN);
-            }
+            setWrist(gamepad1);
+            setWrist(gamepad2);
 
-            if(gamepad1.left_trigger > 0){
-                clawServo.setPosition(MAX_CLAW_CLOSE);
-            } else  if(gamepad1.left_bumper){
-                clawServo.setPosition(MAX_CLAW_OPEN);
-            }
-
-            if(gamepad2.dpad_up){
-                wristServo.setPosition(MAX_WRIST_CLOSE);
-            } else  if(gamepad2.dpad_down){
-                wristServo.setPosition(MAX_WRIST_OPEN);
-            }
-
-            if(gamepad1.dpad_up){
-                wristServo.setPosition(MAX_WRIST_CLOSE);
-            } else  if(gamepad1.dpad_down){
-                wristServo.setPosition(MAX_WRIST_OPEN);
-            }
-
-
-//            if(gamepad1.x){
-//                wristServo.setPosition(MAX_WRIST_CLOSE);
-//            } else  if(gamepad1.b){
-//                wristServo.setPosition(MAX_WRIST_OPEN);
-//            }
-
-            /**
-             *                                                              Lock for hanging
-             */
-
+            setClaw(gamepad1);
+            setClaw(gamepad2);
 
             if (gamepad2.x) {
                 armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -134,6 +101,26 @@ public class Teleop24 extends LinearOpMode {
 
             telemetry.update();
 
+        }
+    }
+
+    private void setWrist(Gamepad gamepad) {
+        if(gamepad.left_trigger > 0){
+            wristServo.setPosition(MAX_CLAW_CLOSE);
+        } else  if(gamepad.left_bumper){
+            wristServo.setPosition(MAX_CLAW_OPEN);
+        }
+    }
+
+    private void setClaw(Gamepad gamepad) {
+        if(gamepad.dpad_up){
+            clawServo.setPosition(MAX_WRIST_CLOSE);
+        } else  if(gamepad.dpad_down) {
+            clawServo.setPosition(MAX_WRIST_OPEN);
+        } else  if(gamepad.dpad_left) {
+            clawServo.setPosition(MAX_WRIST_OPEN + (MAX_WRIST_CLOSE - MAX_WRIST_OPEN) * 0.33);
+        }else  if(gamepad.dpad_right) {
+            clawServo.setPosition(MAX_WRIST_OPEN+ (MAX_WRIST_CLOSE - MAX_WRIST_OPEN) * 0.66);
         }
     }
 
