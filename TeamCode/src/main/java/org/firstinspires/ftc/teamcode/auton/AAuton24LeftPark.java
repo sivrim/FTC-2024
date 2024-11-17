@@ -9,15 +9,20 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.DeviceNames;
 import org.firstinspires.ftc.teamcode.auton.drive.SampleMecanumDrive;
 
 @Config
 @Autonomous(group = "aaa")
 public class AAuton24LeftPark extends LinearOpMode {
     public static double FORWARD_1 = 3;
-    public static double STRAFE_LEFT = 20;
+    public static double STRAFE_LEFT = 22;
     private ElapsedTime runtime = new ElapsedTime();
 
+    public static double MAX_CLAW_OPEN = 0.1;
+    public static double MAX_CLAW_CLOSE = 1.0;
+    public static double MAX_WRIST_OPEN = 0.0;
+    public static double MAX_WRIST_CLOSE = 1.0;
     DcMotor armMotor = null;
     Servo clawServo;
     Servo wristServo;
@@ -35,8 +40,15 @@ public class AAuton24LeftPark extends LinearOpMode {
         Trajectory trajectory2 = drive.trajectoryBuilder(trajectory1.end())
                 .strafeLeft(STRAFE_LEFT)
                 .build();
+        clawServo = hardwareMap.get(Servo.class, DeviceNames.SERVO_CLAW);
+        wristServo = hardwareMap.get(Servo.class, DeviceNames.SERVO_WRIST);
 
+        clawServo.setPosition(MAX_CLAW_CLOSE);
+        wristServo.setPosition(MAX_CLAW_CLOSE);
         waitForStart();
+        clawServo.setPosition(MAX_CLAW_CLOSE);
+        wristServo.setPosition(MAX_CLAW_CLOSE);
+
 
         if(isStopRequested()) return;
 
