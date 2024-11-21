@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -70,14 +71,14 @@ public class AAuton24Left extends ArmUp {
          * arm 1 --> goes down by default
          * arm 2 --> goes back by default
          */
-//
-//        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_2_MOVE_BACK_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
-//
-//        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_1_MOVE_BACK_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor, runtime);
-//
-//        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_2_MOVE_BACK_2_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
-//
-//        wristServo.setPosition(MAX_WRIST_DROP);
+
+        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_2_MOVE_BACK_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
+
+        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_1_MOVE_BACK_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor, runtime);
+
+        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_2_MOVE_BACK_2_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
+
+        wristServo.setPosition(MAX_WRIST_DROP);
 
         drive.followTrajectory(trajectoryStrafeLeftToBasket);
         sleep(200);
