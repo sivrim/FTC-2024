@@ -36,7 +36,6 @@ import org.firstinspires.ftc.teamcode.auton.drive.SampleMecanumDrive;
  * satisfactory result is produced.
  */
 @Config
-@Disabled
 @Autonomous(group="drive")
 public class TrackingWheelForwardOffsetTuner extends LinearOpMode {
     public static double ANGLE = 180; // deg

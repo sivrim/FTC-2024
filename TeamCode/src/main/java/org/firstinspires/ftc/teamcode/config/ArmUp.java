@@ -17,7 +17,13 @@ public class ArmUp extends LinearOpMode {
     public static double MAX_WRIST_UP = 0.0;
     public static double MAX_WRIST_DOWN = 1.0;
     public static double MAX_WRIST_DROP = 0.6;
-    public static double TURN_M45 = -45;
+    public static double TURN_M50 = -50;
+
+    public static double TURN_RESET = 0;
+
+    public static double TURN_90 = 90;
+
+    public static double TURN_M90 = -90;
 
     public static double TURN_45 = 45;
 
@@ -53,7 +59,7 @@ public class ArmUp extends LinearOpMode {
         telemetry.addData("After motion, Currently at",  " at %7d ",
                 motor.getCurrentPosition());
         telemetry.update();
-        sleep(1000);
+        sleep(100);
     }
 
 }

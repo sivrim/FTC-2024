@@ -44,10 +44,10 @@ import java.util.List;
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(.6, 0, 0.1);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(.3, 0, .1);
 
-    public static double LATERAL_MULTIPLIER = 1.28;
+    public static double LATERAL_MULTIPLIER = 1.25;
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
@@ -72,6 +72,8 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     private List<Integer> lastEncPositions = new ArrayList<>();
     private List<Integer> lastEncVels = new ArrayList<>();
+
+    public static double MOTOR_POWER_RATIO = 0.7;
 
     public SampleMecanumDrive(HardwareMap hardwareMap) {
         super(DriveConstants.kV, DriveConstants.kA, DriveConstants.kStatic, DriveConstants.TRACK_WIDTH, DriveConstants.TRACK_WIDTH, LATERAL_MULTIPLIER);
@@ -281,10 +283,10 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     @Override
     public void setMotorPowers(double v, double v1, double v2, double v3) {
-        leftFront.setPower(v);
-        leftRear.setPower(v1);
-        rightRear.setPower(v2);
-        rightFront.setPower(v3);
+        leftFront.setPower(v * MOTOR_POWER_RATIO);
+        leftRear.setPower(v1 * MOTOR_POWER_RATIO);
+        rightRear.setPower(v2 * MOTOR_POWER_RATIO);
+        rightFront.setPower(v3 * MOTOR_POWER_RATIO);
     }
 
     @Override
