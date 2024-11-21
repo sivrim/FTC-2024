@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.config.ArmUp;
 @Config
 @Autonomous(group = "aaa")
 public class AAuton24Left extends ArmUp {
-    public static double FORWARD_FROM_START = 18;
+    public static double FORWARD_FROM_START = 6;
     public static double STRAFE_LEFT_GO_TO_BASKET = 8;
     public static double BACK_2 = 15;
 
@@ -35,7 +35,7 @@ public class AAuton24Left extends ArmUp {
         clawServo = hardwareMap.get(Servo.class, DeviceNames.SERVO_CLAW);
         clawServo.setPosition(MAX_CLAW_CLOSE);
         wristServo = hardwareMap.get(Servo.class, DeviceNames.SERVO_WRIST);
-        wristServo.setPosition(MAX_WRIST_CLOSE);
+        wristServo.setPosition(MAX_WRIST_UP);
 
         Trajectory trajectoryForwardFromStart = drive.trajectoryBuilder(new Pose2d())
                 .forward(FORWARD_FROM_START)
@@ -53,29 +53,54 @@ public class AAuton24Left extends ArmUp {
 
         if(isStopRequested()) return;
 
-        drive.followTrajectory(trajectoryForwardFromStart);
-
-        drive.followTrajectory(trajectoryStrafeLeftToBasket);
-
-        drive.turn(Math.toRadians(TURN_M45));
+        //drive.followTrajectory(trajectoryForwardFromStart);
 
         // Reset the motor encoder so that it reads zero ticks
-        armMotor2.setPower(ARM2_POWER);
-        armMotor.setPower(ARM1_POWER);
+//        armMotor2.setPower(ARM2_POWER);
+//        armMotor.setPower(ARM1_POWER);
 
-        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_1_MOVE_BACK_1_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
+        /**
+         * arm 1 --> goes down
+         * arm 2 --> goes back
+         */
+
         moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_2_MOVE_BACK_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
-        wristServo.setPosition(MAX_WRIST_OPEN);
-        sleep(1000);
-        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_1_MOVE_BACK_2_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
-        sleep(1000);
-        wristServo.setPosition(MAX_WRIST_CLOSE);
-        sleep(1000);
-        clawServo.setPosition(MAX_CLAW_OPEN);
-        sleep(1000);
-        wristServo.setPosition(MAX_WRIST_OPEN);
 
-        drive.followTrajectory(trajectoryGoBack);
+        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_1_MOVE_BACK_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor, runtime);
+
+        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_2_MOVE_BACK_2_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
+
+        wristServo.setPosition(MAX_WRIST_DROP);
+
+        sleep(1000);
+
+
+//        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(20 * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
+
+//        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(20 * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
+
+        //
+//        drive.followTrajectory(trajectoryStrafeLeftToBasket);
+//
+//        drive.turn(Math.toRadians(TURN_M45));
+//
+//        // Reset the motor encoder so that it reads zero ticks
+//        armMotor2.setPower(ARM2_POWER);
+//        armMotor.setPower(ARM1_POWER);
+//
+//        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_1_MOVE_BACK_1_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
+//        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_2_MOVE_BACK_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
+//        wristServo.setPosition(MAX_WRIST_UP);
+//        sleep(1000);
+//        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_1_MOVE_BACK_2_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
+//        sleep(1000);
+//        wristServo.setPosition(MAX_WRIST_UP);
+//        sleep(1000);
+//        clawServo.setPosition(MAX_CLAW_OPEN);
+//        sleep(1000);
+//        wristServo.setPosition(MAX_WRIST_UP);
+//
+//        drive.followTrajectory(trajectoryGoBack);
 
         //        drive.turn(Math.toRadians(TURN_45));
         //        drive.followTrajectory(trajectory3);

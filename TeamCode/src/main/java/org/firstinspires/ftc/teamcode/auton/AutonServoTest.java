@@ -17,10 +17,10 @@ import org.firstinspires.ftc.teamcode.auton.drive.SampleMecanumDrive;
 @Config
 @TeleOp(name = "AAutonServoTest", group = "aaa")
 public class AutonServoTest extends LinearOpMode {
-    public static double MAX_CLAW_OPEN = 0.1;
-    public static double MAX_CLAW_CLOSE = 1.0;
-    public static double MAX_WRIST_OPEN = 0.0;
-    public static double MAX_WRIST_CLOSE = 1.0;
+    public static double MAX_CLAW_OPEN = 0.1;//close
+    public static double MAX_CLAW_CLOSE = 1.0; //actually open
+    public static double MAX_WRIST_OPEN = 0.0;//goes up
+    public static double MAX_WRIST_CLOSE = 1.0;// go toward ground
 
     public static boolean fineGrained = false;
 

@@ -8,12 +8,18 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.DeviceNames;
 
+/**
+ * Arm motro 2 striaght
+ * -4600 , -8.6, -3100, -204
+ *
+ */
+
 @TeleOp
-@Disabled
 @Config
 public class EncoderOpmode extends LinearOpMode {
     public static double CPR = 537;
     public static String motorName = DeviceNames.MOTOR_ARM2;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
