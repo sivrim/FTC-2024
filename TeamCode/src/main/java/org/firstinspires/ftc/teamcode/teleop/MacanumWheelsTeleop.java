@@ -15,14 +15,13 @@ public class MacanumWheelsTeleop {
     public DcMotor frontRightMotor = null;
     public DcMotor backRightMotor = null;
     Telemetry telemetry;
-    public static double POWER_RATIO = 0.4;
+    public static double POWER_RATIO = 0.8;
 
     public static  double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
     public static  double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // No External Gearing.
     public static  double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     public static double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    public static  double     DRIVE_SPEED             = 0.6;
     public static  double     TURN_SPEED              = 0.5;
 
     public MacanumWheelsTeleop(HardwareMap hardwareMap, Telemetry telemetry) {

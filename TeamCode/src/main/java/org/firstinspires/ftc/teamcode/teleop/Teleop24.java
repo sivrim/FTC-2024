@@ -69,7 +69,13 @@ public class Teleop24 extends LinearOpMode {
             double chassisTurn = gamepad1.right_stick_x;
 
             armMotor.setPower(gamepad2.left_stick_y);
-            armMotor2.setPower(-1 * gamepad2.right_stick_y * 1);
+
+            float armMotor2Power = -1 * gamepad2.right_stick_y * 1;
+
+            if(armMotor2.getCurrentPosition() < -8600 && armMotor2Power > 0 ){
+                armMotor2Power = 0;
+            }
+            armMotor2.setPower(armMotor2Power);
 
             setWrist(gamepad1);
             setWrist(gamepad2);
