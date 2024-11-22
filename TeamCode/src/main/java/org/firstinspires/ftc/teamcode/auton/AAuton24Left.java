@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.DeviceNames;
 import org.firstinspires.ftc.teamcode.auton.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.config.ArmDown;
 import org.firstinspires.ftc.teamcode.config.ArmUp;
 
 @Config
@@ -94,7 +95,12 @@ public class AAuton24Left extends ArmUp {
         sleep(1000);
         wristServo.setPosition(MAX_WRIST_DOWN);
         sleep(1000);
-//
+
+        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(ArmDown.ARM_1_MOVE_DOWN_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor, runtime);
+
+        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(ArmDown.ARM_2_MOVE_BACK_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
+
+        //
 //        drive.turn(Math.toRadians(TURN_PARK));
 //        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(ARM_1_PARK_ANGLE_1 * ARM2_ANGLE_TO_ENCODER), armMotor, runtime);
 //        drive.followTrajectory(trajectoryForwardToStart);
