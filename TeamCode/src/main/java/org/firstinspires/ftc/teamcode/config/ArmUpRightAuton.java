@@ -27,8 +27,8 @@ public class ArmUpRightAuton extends LinearOpMode {
 
     public static double TURN_45 = 45;
 
-    public static int ARM_1_MOVE_UP_1_ANGLE = 100;
-    public static int ARM_1_MOVE_DOWN_1_ANGLE = 40;
+    public static int ARM_1_MOVE_UP_1_ANGLE = 105;
+    public static int ARM_1_MOVE_DOWN_1_ANGLE = 90;
     public static int ARM_2_MOVE_UP_1_ANGLE = 40;
     public static double ARM1_POWER = 1.0;
     public static double ARM2_POWER = 1.0;

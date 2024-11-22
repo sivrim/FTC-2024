@@ -12,19 +12,16 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.DeviceNames;
 import org.firstinspires.ftc.teamcode.auton.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.config.ArmUp;
 import org.firstinspires.ftc.teamcode.config.ArmUpRightAuton;
 
 @Config
 @Autonomous(group = "aaa")
-public class AAuton24Right extends ArmUpRightAuton {
+public class AAuton24RightStrafe extends ArmUpRightAuton {
     private ElapsedTime runtime = new ElapsedTime();DcMotor armMotor = null;Servo clawServo;Servo wristServo;DcMotor armMotor2;
 
-    public static double FORWARD_FROM_START_STEP_1 = 4;
-    public static double STRAFE_LEFT_STRAFE_STEP_2 = 18;
-    public static double FORWARD_TO_BAR_3 = 25.5;
-    public static double BACK_STEP_4 = 28;
-    public static double STRAFE_RIGHT_STEP_5 = 60;
+    public static double FORWARD_TO_BAR_STEP_2 = 5;
+    public static Vector2d STRAFE_DIRECT_STEP_1 = new Vector2d(30, 30);
+    public static double BACK_STEP_3 = 5;
     @Override
     public void runOpMode() {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -32,34 +29,26 @@ public class AAuton24Right extends ArmUpRightAuton {
         clawServo = hardwareMap.get(Servo.class, DeviceNames.SERVO_CLAW);wristServo = hardwareMap.get(Servo.class, DeviceNames.SERVO_WRIST);
         clawServo.setPosition(MAX_CLAW_CLOSE);wristServo.setPosition(MAX_WRIST_UP);
 
-        Trajectory trajectoryForwardFromStart = drive.trajectoryBuilder(new Pose2d()).forward(FORWARD_FROM_START_STEP_1).build();
-        Trajectory trajectoryStrafeLeft = drive.trajectoryBuilder(trajectoryForwardFromStart.end()).strafeLeft(STRAFE_LEFT_STRAFE_STEP_2).build();
-        Trajectory trajectoryForwardToBar = drive.trajectoryBuilder(trajectoryStrafeLeft.end()).forward(FORWARD_TO_BAR_3).build();
-        Trajectory trajectoryGoBack = drive.trajectoryBuilder(trajectoryForwardToBar.end()).back(BACK_STEP_4).build();
-        Trajectory trajectoryPark = drive.trajectoryBuilder(trajectoryGoBack.end()).strafeRight(STRAFE_RIGHT_STEP_5).build();
+        Trajectory trajectoryStrafeFromStart = drive.trajectoryBuilder(new Pose2d()).strafeTo(STRAFE_DIRECT_STEP_1).build();
+        Trajectory trajectoryForward = drive.trajectoryBuilder(trajectoryStrafeFromStart.end()).forward(FORWARD_TO_BAR_STEP_2).build();
+        Trajectory trajectoryGoBack = drive.trajectoryBuilder(trajectoryForward.end()).back(BACK_STEP_3).build();
 
         waitForStart();if(isStopRequested()) return;
 
         // arm 1 --> goes down by default                        // arm 2 --> goes back by default
 
-
         moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_2_MOVE_UP_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
         moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_1_MOVE_UP_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor, runtime);
         wristServo.setPosition(MAX_WRIST_DOWN);
 
-        drive.followTrajectory(trajectoryForwardFromStart);
-        drive.followTrajectory(trajectoryStrafeLeft);
-        sleep(500);
-        drive.followTrajectory(trajectoryForwardToBar);
-        sleep(500);
-        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(ARM_1_MOVE_DOWN_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor, runtime);
-        sleep(500);
+        drive.followTrajectory(trajectoryStrafeFromStart);
+        sleep(1000);
+        drive.followTrajectory(trajectoryForward);
+        sleep(1000);
+        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_1_MOVE_DOWN_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor, runtime);
         clawServo.setPosition(MAX_CLAW_OPEN);
-        sleep(500);
+        sleep(1000);
         drive.followTrajectory(trajectoryGoBack);
-
-        sleep(500);
-        drive.followTrajectory(trajectoryPark);
 
     }
 

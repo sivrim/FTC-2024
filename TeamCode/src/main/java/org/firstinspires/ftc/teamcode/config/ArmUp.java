@@ -17,7 +17,8 @@ public class ArmUp extends LinearOpMode {
     public static double MAX_WRIST_UP = 0.0;
     public static double MAX_WRIST_DOWN = 1.0;
     public static double MAX_WRIST_DROP = 0.6;
-    public static double TURN_M50 = -50;
+    public static double TURN_M50 = -55;
+    public static double TURN_PARK = -95;
 
     public static double TURN_RESET = 0;
 
@@ -28,7 +29,9 @@ public class ArmUp extends LinearOpMode {
     public static double TURN_45 = 45;
 
     public static int ARM_2_MOVE_BACK_1_ANGLE = 20;
-    public static int ARM_1_MOVE_BACK_1_ANGLE = 500;
+    public static int ARM_1_MOVE_BACK_1_ANGLE = 490;
+    public static int ARM_1_PARK_ANGLE_1 = 150;
+    public static int ARM_1_PARK_ANGLE_2 = 50;
     public static int ARM_2_MOVE_BACK_2_ANGLE = 140;
     public static double ARM1_POWER = 1.0;
     public static double ARM2_POWER = 1.0;
