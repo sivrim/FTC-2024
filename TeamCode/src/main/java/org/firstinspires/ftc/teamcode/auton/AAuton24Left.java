@@ -98,7 +98,7 @@ public class AAuton24Left extends ArmUp {
 
         moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(ArmDown.ARM_1_MOVE_DOWN_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor, runtime);
 
-        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(ArmDown.ARM_2_MOVE_BACK_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
+        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ArmDown.ARM_2_MOVE_BACK_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
 
         //
 //        drive.turn(Math.toRadians(TURN_PARK));
