@@ -8,13 +8,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Config
 public class ArmDown extends LinearOpMode {
-    public static double ARM1_ANGLE_TO_ENCODER = 3 * 8375/90;
-    public static double ARM2_ANGLE_TO_ENCODER = 2680/90;
 
-    public static int ARM_1_MOVE_DOWN_1_ANGLE = 300;
-    public static int ARM_2_MOVE_BACK_1_ANGLE = -135;
-    public static double ARM1_POWER = 1.0;
-    public static double ARM2_POWER = 1.0;
+    public static int ARM_1_MOVE_DOWN_1_ANGLE = 122;
 
     public void runOpMode() {
     }
