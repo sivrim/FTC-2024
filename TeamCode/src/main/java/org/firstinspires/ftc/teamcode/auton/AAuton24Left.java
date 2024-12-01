@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.DeviceNames;
 import org.firstinspires.ftc.teamcode.auton.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.config.ArmDown;
 import org.firstinspires.ftc.teamcode.config.ArmUp;
-
+import static org.firstinspires.ftc.teamcode.config.TurnConstants.*;
 @Config
 @Autonomous(group = "aaa")
 public class AAuton24Left extends ArmUp {

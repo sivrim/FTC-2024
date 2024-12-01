@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.auton.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.config.ArmUp;
-
+import static org.firstinspires.ftc.teamcode.config.TurnConstants.*;
 @Config
 @Autonomous(group = "aaa")
 public class AATurnTest extends ArmUp {
