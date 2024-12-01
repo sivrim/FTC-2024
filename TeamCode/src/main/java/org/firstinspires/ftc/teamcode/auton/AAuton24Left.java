@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.auton;
 
+import android.database.sqlite.SQLiteException;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
@@ -19,9 +21,10 @@ import org.firstinspires.ftc.teamcode.config.ArmUp;
 public class AAuton24Left extends ArmUp {
     public static double FORWARD_FROM_START_STEP_1 = 25;
     public static double STRAFE_LEFT_GO_TO_BASKET_STEP_2 = 18;
-    public static double BACK_STEP_3 = 19;
+    public static double BACK_STEP_3 = 18;
 
-    public static double FORWARD_TO_START_STEP_4 = 20;
+    public static double TURN_RATIO = 1.5;
+    public static double FORWARD_TO_START_STEP_4 = 1;
     public static double STRAFE_TO_PARK_STEP_5 = 60;
 
 //    public static double PARK_STEP_5 = 50;
@@ -55,11 +58,11 @@ public class AAuton24Left extends ArmUp {
                 .back(BACK_STEP_3)
                 .build();
 
-        Trajectory trajectoryForwardToStart = drive.trajectoryBuilder(new Pose2d()) //(trajectoryGoBack.end())
+        Trajectory trajectoryForwardToStart = drive.trajectoryBuilder(trajectoryGoBack.end())
                 .forward(FORWARD_TO_START_STEP_4)
                 .build();
 
-        Trajectory trajectoryPark = drive.trajectoryBuilder(trajectoryForwardToStart.end())
+        Trajectory trajectoryForwardToTurn = drive.trajectoryBuilder(trajectoryForwardToStart.end())
                 .forward(STRAFE_TO_PARK_STEP_5)
                 .build();
 
@@ -67,8 +70,7 @@ public class AAuton24Left extends ArmUp {
 
         if(isStopRequested()) return;
 
-        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(10 * ARM2_ANGLE_TO_ENCODER), armMotor, runtime);
-
+        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(10 * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
 
         drive.followTrajectory(trajectoryForwardFromStart);
 
@@ -78,34 +80,25 @@ public class AAuton24Left extends ArmUp {
          */
 
         moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_2_MOVE_BACK_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
-
-        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_1_MOVE_BACK_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor, runtime);
-
+        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(ARM_1_MOVE_BACK_1_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
         moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_2_MOVE_BACK_2_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
-
         wristServo.setPosition(MAX_WRIST_DROP);
-
         drive.followTrajectory(trajectoryStrafeLeftToBasket);
-        sleep(1000);
-        drive.turn(Math.toRadians(TURN_M50));
-        sleep(1000);
+        drive.turn(Math.toRadians(TURN_M45 * TURN_RATIO));
         drive.followTrajectory(trajectoryGoBack);
-        sleep(1000);
         clawServo.setPosition(MAX_CLAW_OPEN);
-        sleep(1000);
         wristServo.setPosition(MAX_WRIST_DOWN);
-        sleep(1000);
 
-        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(ArmDown.ARM_1_MOVE_DOWN_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor, runtime);
+        sleep(2000);
+        drive.followTrajectory(trajectoryForwardToStart);
+        sleep(2000);
 
-        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ArmDown.ARM_2_MOVE_BACK_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
+        drive.turn(Math.toRadians(TURN_SAMPLE * TURN_RATIO));
 
-        //
-//        drive.turn(Math.toRadians(TURN_PARK));
-//        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(ARM_1_PARK_ANGLE_1 * ARM2_ANGLE_TO_ENCODER), armMotor, runtime);
-//        drive.followTrajectory(trajectoryForwardToStart);
-//        drive.followTrajectory(trajectoryPark);
-//        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(ARM_1_PARK_ANGLE_2 * ARM2_ANGLE_TO_ENCODER), armMotor, runtime);
+        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ArmDown.ARM_1_MOVE_DOWN_1_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
+        clawServo.setPosition(MAX_CLAW_CLOSE);
+        clawServo.setPosition(MAX_WRIST_DROP);
+
 
 
     }
