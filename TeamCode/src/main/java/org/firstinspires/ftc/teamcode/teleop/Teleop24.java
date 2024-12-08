@@ -68,7 +68,7 @@ public class Teleop24 extends LinearOpMode {
             double chassisX = getChassisX();
             double chassisTurn = gamepad1.right_stick_x;
 
-            armMotor.setPower(gamepad2.left_stick_y);
+            armMotor.setPower(-1 * gamepad2.left_stick_y);
 
             float armMotor2Power = -1 * gamepad2.right_stick_y * 1;
 
@@ -85,6 +85,10 @@ public class Teleop24 extends LinearOpMode {
 
             if (gamepad2.x) {
                 armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            }
+
+            if (gamepad2.y) {
                 armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
 
