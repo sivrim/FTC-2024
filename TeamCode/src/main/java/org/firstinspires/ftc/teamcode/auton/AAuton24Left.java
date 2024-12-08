@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.DeviceNames;
-import org.firstinspires.ftc.teamcode.auton.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.rr.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.config.ArmDown;
 import org.firstinspires.ftc.teamcode.config.ArmUp;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -161,9 +161,7 @@ public class AAuton24Left extends ArmUp {
         drive.followTrajectory(sample1_trajectoryForwardFromStart);
 
         //move arm up, while we are away from all walls and basket. Otherwise, moving arms has to be co-ordinated
-        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_2_MOVE_BACK_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
-        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(ARM_1_MOVE_BACK_1_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
-        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_2_MOVE_BACK_2_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
+        moveArmFromStart();
 
         wristServo.setPosition(MAX_WRIST_DROP);
         drive.followTrajectory(sample1_trajectoryStrafeLeftToBasket);
@@ -171,6 +169,12 @@ public class AAuton24Left extends ArmUp {
         drive.followTrajectory(sample1_trajectoryGoBack);
         clawServo.setPosition(MAX_CLAW_OPEN);
         wristServo.setPosition(MAX_WRIST_DOWN);
+    }
+
+    private void moveArmFromStart() {
+        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_2_MOVE_BACK_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
+        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(ARM_1_MOVE_BACK_1_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
+        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_2_MOVE_BACK_2_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
     }
 
     private void initTrajectories() {
