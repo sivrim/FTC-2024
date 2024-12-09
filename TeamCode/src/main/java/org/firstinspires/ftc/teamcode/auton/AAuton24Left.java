@@ -92,7 +92,7 @@ public class AAuton24Left extends ArmUp {
 
         moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ArmDown.ARM_1_MOVE_DOWN_1_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
         clawServo.setPosition(MAX_CLAW_CLOSE);
-        clawServo.setPosition(MAX_WRIST_DROP);
+        clawServo.setPosition(MAX_WRIST_DOWN);
 
     }
 
@@ -163,7 +163,7 @@ public class AAuton24Left extends ArmUp {
         //move arm up, while we are away from all walls and basket. Otherwise, moving arms has to be co-ordinated
         moveArmFromStart();
 
-        wristServo.setPosition(MAX_WRIST_DROP);
+        wristServo.setPosition(MAX_WRIST_DOWN);
         drive.followTrajectory(sample1_trajectoryStrafeLeftToBasket);
         drive.turn(Math.toRadians(TURN_M45 * TURN_RATIO));
         drive.followTrajectory(sample1_trajectoryGoBack);

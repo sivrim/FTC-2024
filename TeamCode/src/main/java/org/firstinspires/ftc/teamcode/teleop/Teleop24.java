@@ -27,10 +27,10 @@ public class Teleop24 extends LinearOpMode {
     Servo wristServo;
     DcMotor armMotor2;
 
-    public static double MAX_CLAW_OPEN = 0.25;
-    public static double MAX_CLAW_CLOSE = 0.8;
-    public static double MAX_WRIST_OPEN = 0.0;
-    public static double MAX_WRIST_CLOSE = 1.0;
+    public static double MAX_CLAW_OPEN = 0.6;
+    public static double MAX_CLAW_CLOSE = 0.0;
+    public static double MAX_WRIST_OPEN = 0.4;
+    public static double MAX_WRIST_CLOSE = 0.8;
     public static boolean ENABLE_GAMEPAD_2 = true;
 
 

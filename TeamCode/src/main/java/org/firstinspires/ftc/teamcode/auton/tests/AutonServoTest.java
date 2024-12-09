@@ -11,11 +11,11 @@ import org.firstinspires.ftc.teamcode.DeviceNames;
 @Config
 @TeleOp(name = "AAutonServoTest", group = "aaa")
 public class AutonServoTest extends LinearOpMode {
-    public static double MAX_CLAW_OPEN = 0.1;//close
-    public static double MAX_CLAW_CLOSE = 1.0; //actually open
-    public static double MAX_WRIST_OPEN = 0.0;//goes up
-    public static double MAX_WRIST_CLOSE = 1.0;// go toward ground
-
+    public static double MAX_CLAW_OPEN = 0.6;//
+    public static double MAX_CLAW_CLOSE = 0.0; //
+    public static double MAX_WRIST_UP = 0.4;//goes up
+    public static double MAX_WRIST_DOWN = 0.8;// go toward ground
+    public static double MAX_WRIST_START = 0.0;
     public static boolean fineGrained = false;
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -25,25 +25,29 @@ public class AutonServoTest extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        /*
+            CLAW OPEN
+            CLOSE
+            WRISE DOWN
+            WRIST UP
+
+        */
+
         clawServo = hardwareMap.get(Servo.class, DeviceNames.SERVO_CLAW);
-
         wristServo = hardwareMap.get(Servo.class, DeviceNames.SERVO_WRIST);
-
         telemetry.addData("clawservo", clawServo.getPosition());
-
-        clawServo.setPosition(MAX_CLAW_CLOSE);
-        telemetry.addData("clawservo", clawServo.getPosition());
-
-        sleep(2000);
         clawServo.setPosition(MAX_CLAW_OPEN);
         telemetry.addData("clawservo", clawServo.getPosition());
+        sleep(2000);
+        clawServo.setPosition(MAX_CLAW_CLOSE);
+        telemetry.addData("clawservo", clawServo.getPosition());
         telemetry.update();
-
         sleep(2000);
-        wristServo.setPosition(MAX_WRIST_CLOSE);//in
+        wristServo.setPosition(MAX_WRIST_DOWN);//in
         sleep(2000);
-        wristServo.setPosition(MAX_WRIST_OPEN);//out
+        wristServo.setPosition(MAX_WRIST_UP);//out
         sleep(2500);
+        wristServo.setPosition(MAX_WRIST_START);//out
 
         if(fineGrained){
             wristServo.setDirection(Servo.Direction.REVERSE);
