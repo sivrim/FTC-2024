@@ -9,18 +9,22 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Config
 public class ArmUp extends LinearOpMode {
     public static double ARM1_ANGLE_TO_ENCODER = 3287/90;
-    public static double ARM2_ANGLE_TO_ENCODER = 2680/90;
+    public static double ARM2_ANGLE_TO_ENCODER = 1380/90;
 
 
-    public static double MAX_CLAW_OPEN = 1.0;
-    public static double MAX_CLAW_CLOSE = 0.1;
-    public static double MAX_WRIST_UP = 0.0;
-    public static double MAX_WRIST_DOWN = 1.0;
-    public static double MAX_WRIST_DROP = 0.6;
+    public static double MAX_CLAW_OPEN = 0.6;//close
+    public static double MAX_CLAW_CLOSE = 0.0; //actually open
+    public static double MAX_WRIST_UP = 0.6;//goes up
+    public static double MAX_WRIST_DOWN = 0.8;// go toward ground
+    public static double MAX_WRIST_START = 0.0;
 
     public static int ARM_1_MOVE_UP_AT_START_ANGLE = 10;
     public static int ARM_2_MOVE_BACK_1_ANGLE = 20;
-    public static int ARM_1_MOVE_BACK_1_ANGLE = 162;
+    public static int ARM_1_MOVE_BACK_1_ANGLE = 152;
+    public static int ARM_1_MOVE_BACK_BASKET_1_ANGLE = 15;
+
+    public static int ARM_1_SAMPLE_PICK_ANGLE = 115;
+
     public static int ARM_1_PARK_ANGLE_1 = 150;
     public static int ARM_1_PARK_ANGLE_2 = 50;
     public static int ARM_2_MOVE_BACK_2_ANGLE = 140;

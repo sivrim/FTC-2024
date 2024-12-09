@@ -27,10 +27,10 @@ public class Teleop24 extends LinearOpMode {
     Servo wristServo;
     DcMotor armMotor2;
 
-    public static double MAX_CLAW_OPEN = 0.25;
-    public static double MAX_CLAW_CLOSE = 0.8;
-    public static double MAX_WRIST_OPEN = 0.0;
-    public static double MAX_WRIST_CLOSE = 1.0;
+    public static double MAX_CLAW_OPEN = 0.6;
+    public static double MAX_CLAW_CLOSE = 0.0;
+    public static double MAX_WRIST_OPEN = 0.4;
+    public static double MAX_WRIST_CLOSE = 0.8;
     public static boolean ENABLE_GAMEPAD_2 = true;
 
 
@@ -68,7 +68,7 @@ public class Teleop24 extends LinearOpMode {
             double chassisX = getChassisX();
             double chassisTurn = gamepad1.right_stick_x;
 
-            armMotor.setPower(gamepad2.left_stick_y);
+            armMotor.setPower(-1 * gamepad2.left_stick_y);
 
             float armMotor2Power = -1 * gamepad2.right_stick_y * 1;
 
@@ -85,6 +85,10 @@ public class Teleop24 extends LinearOpMode {
 
             if (gamepad2.x) {
                 armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            }
+
+            if (gamepad2.y) {
                 armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
 
