@@ -35,8 +35,8 @@ import java.util.List;
 public class AAuton24LeftTrajSequence extends ArmUp {
     public static double FORWARD_FROM_START_STEP_1 = 16;
     public static double STRAFE_LEFT_GO_TO_BASKET_SAMPLE_1 = 7;
-    public static double STRAFE_RIGHT_GO_TO_SAMPLE2 = 8;
-    public static double Forward_TO_SAMPLE2 = 2;
+    public static double STRAFE_RIGHT_GO_TO_SAMPLE2 = 4;
+    public static double FORWARD_FROM_DROP = 8;
     public static double BACK_STEP_3 = 16;
 
     public static double X = 22.5;
@@ -54,7 +54,11 @@ public class AAuton24LeftTrajSequence extends ArmUp {
     DcMotor armMotor2;
     SampleMecanumDrive drive;
 
+    //if false, no arm and wrist movement
     public static boolean arm = false;
+    //if false, no chassis movement
+    public static boolean chassis = true;
+    public static boolean april = false;
 
     private Position cameraPosition = new Position(DistanceUnit.INCH,
             0, 0, 0, 0);
@@ -88,34 +92,49 @@ public class AAuton24LeftTrajSequence extends ArmUp {
                 .build();
 
         TrajectorySequence trajToSample2Pick = drive.trajectorySequenceBuilder(trajToSample1Drop.end())
-                .forward(3)
+                .forward(FORWARD_FROM_DROP)
                 .turn(Math.toRadians(ANGLE * TURN_RATIO))
                 .strafeRight(STRAFE_RIGHT_GO_TO_SAMPLE2)
-                .forward(Forward_TO_SAMPLE2)
                 .build();
 
-        TrajectorySequence trajToSample2Drop = drive.trajectorySequenceBuilder(trajToSample1Drop.end())
+        TrajectorySequence trajToSample2Drop = drive.trajectorySequenceBuilder(trajToSample2Pick.end())
+                .turn(Math.toRadians(-1 * ANGLE * TURN_RATIO))
+                .strafeLeft(STRAFE_RIGHT_GO_TO_SAMPLE2)
+                .back(FORWARD_FROM_DROP)
+                .build();
+
+        TrajectorySequence trajToSample3Pick = drive.trajectorySequenceBuilder(trajToSample2Drop.end())
                 .strafeLeft(STRAFE_RIGHT_GO_TO_SAMPLE2)
                 .turn(Math.toRadians(-1 * ANGLE * TURN_RATIO))
                 .build();
+
+
         clawServo.setPosition(MAX_CLAW_CLOSE);
         initAprilTag();
 
+        /////////////////////////////////////////////////////////////////////////////////////
         waitForStart();
         if(isStopRequested()) return;
+        /////////////////////////////////////////////////////////////////////////////////////
+        
         clawServo.setPosition(MAX_CLAW_CLOSE);
         //move so we do not drag the arm on floor
         moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int) (ARM_1_MOVE_UP_AT_START_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
         clawServo.setPosition(MAX_CLAW_CLOSE);
-        drive.followTrajectorySequence(trajToArmStretch);
+
+        if(chassis){
+            drive.followTrajectorySequence(trajToArmStretch);
+        }
+
         if(arm) {
             moveArmFromStart();
         }
-        drive.followTrajectorySequence(trajToSample1Drop);
+        if(chassis) {
+            drive.followTrajectorySequence(trajToSample1Drop);
+        }
 
         if(arm) {
-            sleep(1500);
-
+            sleep(300);
             wristServo.setPosition(MAX_WRIST_DOWN);
             sleep(300);
             moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int) (ARM_1_MOVE_BACK_BASKET_1_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
@@ -124,45 +143,49 @@ public class AAuton24LeftTrajSequence extends ArmUp {
             sleep(300);
             clawServo.setPosition(MAX_CLAW_OPEN);
         }
-        drive.followTrajectorySequence(trajToSample2Pick);
 
-        sleep(100);
-
-        Pose2d currentPose = readAprilTag();
-
-        sleep(3000);
-
-        if(currentPose != null) {
-            Pose2d sample2PickPose;
-            if (currentPose.getX() > 0) { //blue
-                sample2PickPose = new Pose2d(54.9, 57.4, Math.toRadians(-118.5));
-            } else { //red
-                sample2PickPose = new Pose2d(-54.9, -57.4, Math.toRadians(61.5));
-            }
-
-            Pose2d correction = sample2PickPose.minus(currentPose);
-
+        if(chassis) {
+            drive.followTrajectorySequence(trajToSample2Pick);
             sleep(100);
+            Pose2d currentPose = readAprilTag();
+            sleep(300);
+            if (april && currentPose != null) {
+                Pose2d sample2PickPose;
+                if (currentPose.getX() > 0) { //blue
+                    sample2PickPose = new Pose2d(54.9, 55.1, -122.5);
+                } else { //red
+                    sample2PickPose = new Pose2d(-54.9, -55.1, 57.5);
+                }
+                Pose2d correction = sample2PickPose.minus(currentPose);
+                sleep(100);
+                printPose2d("desired pose is ", sample2PickPose);
+                printPose2d("current pose from april tag isc", currentPose);
+                printPose2d("correction is ", correction);
+                telemetry.update();
 
-            telemetry.addData("desired pose is ", sample2PickPose);
-            telemetry.addData("current pose from april tag is ", currentPose);
-            telemetry.addData("correction is ", correction);
-            telemetry.update();
-
-            drive.followTrajectorySequence(drive.trajectorySequenceBuilder(trajToSample2Pick.end())
-                    .forward(correction.getX())
-                    .strafeRight(correction.getY())
-                    .turn(Math.toRadians(correction.getHeading() * TURN_RATIO))
-                    .build());
+                if(correction.getX() > .5 || correction.getY() > .5 || correction.getHeading() > 3) {
+                    drive.followTrajectorySequence(drive.trajectorySequenceBuilder(trajToSample2Pick.end())
+                            .forward(correction.getX())
+                            .strafeRight(correction.getY())
+                            .turn(Math.toRadians(correction.getHeading() * TURN_RATIO))
+                            .build());
+                }
+            }
         }
 
-        armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_1_SAMPLE_PICK_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
-//        wristServo.setPosition(MAX_WRIST_DOWN);
-//        sleep(10);
-//        clawServo.setPosition(MAX_CLAW_CLOSE);
-//        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(ARM_1_SAMPLE_PICK_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
+        if(arm) {
+            armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int) (ARM_1_SAMPLE_PICK_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
+            wristServo.setPosition(MAX_WRIST_DOWN);
+            sleep(10);
+            clawServo.setPosition(MAX_CLAW_CLOSE);
+            moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(ARM_1_SAMPLE_PICK_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
 
+        }
+
+        if(chassis) {
+            drive.followTrajectorySequence(trajToSample2Drop);
+        }
     }
 
     private void moveArmFromStart() {
@@ -199,9 +222,13 @@ public class AAuton24LeftTrajSequence extends ArmUp {
         telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", position.x, position.y, position.z));
         YawPitchRollAngles orientation = detection.robotPose.getOrientation();
         telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", orientation.getPitch(AngleUnit.DEGREES), orientation.getRoll(AngleUnit.DEGREES), orientation.getYaw(AngleUnit.DEGREES)));
-        telemetry.update();
+        //telemetry.update();
     }
 
+    private void printPose2d(String message, Pose2d pose) {
+        telemetry.addLine(String.format("%s, XYZ %6.1f %6.1f %6.1f  (inch)", message, pose.getX(), pose.getY(), pose.getHeading()));
+        //telemetry.update();
+    }
 
     private void initAprilTag() {
 
