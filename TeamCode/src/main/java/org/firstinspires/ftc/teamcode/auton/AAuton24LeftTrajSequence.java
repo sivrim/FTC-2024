@@ -193,6 +193,15 @@ public class AAuton24LeftTrajSequence extends ArmUp {
         if(chassis) {
             drive.followTrajectorySequence(trajToSample2Drop);
         }
+
+        if(chassis) {
+            drive.followTrajectorySequence(trajToSample3Pick);
+        }
+
+        if(chassis) {
+            drive.followTrajectorySequence(trajToSample3Drop);
+        }
+
     }
 
     private void moveArmFromStart() {
