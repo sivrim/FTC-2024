@@ -104,10 +104,10 @@ public class AAuton24LeftTrajSequence extends ArmUp {
                 .build();
 
         TrajectorySequence trajToSample3Pick = drive.trajectorySequenceBuilder(trajToSample2Drop.end())
-                .strafeLeft(STRAFE_RIGHT_GO_TO_SAMPLE2)
-                .turn(Math.toRadians(-1 * ANGLE * TURN_RATIO))
+                .forward(FORWARD_FROM_DROP)
+                .turn(Math.toRadians(ANGLE * TURN_RATIO))
+                .strafeRight(STRAFE_RIGHT_GO_TO_SAMPLE2-10)
                 .build();
-
 
         clawServo.setPosition(MAX_CLAW_CLOSE);
         initAprilTag();
@@ -116,7 +116,7 @@ public class AAuton24LeftTrajSequence extends ArmUp {
         waitForStart();
         if(isStopRequested()) return;
         /////////////////////////////////////////////////////////////////////////////////////
-        
+
         clawServo.setPosition(MAX_CLAW_CLOSE);
         //move so we do not drag the arm on floor
         moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int) (ARM_1_MOVE_UP_AT_START_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
