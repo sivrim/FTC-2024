@@ -106,7 +106,14 @@ public class AAuton24LeftTrajSequence extends ArmUp {
         TrajectorySequence trajToSample3Pick = drive.trajectorySequenceBuilder(trajToSample2Drop.end())
                 .forward(FORWARD_FROM_DROP)
                 .turn(Math.toRadians(ANGLE * TURN_RATIO))
-                .strafeRight(STRAFE_RIGHT_GO_TO_SAMPLE2-10)
+                .strafeRight(STRAFE_RIGHT_GO_TO_SAMPLE2 -10)
+                .build();
+
+        TrajectorySequence trajToSample3Drop = drive.trajectorySequenceBuilder(trajToSample3Pick.end())
+                .strafeRight(10)
+                .turn(Math.toRadians(-1 * ANGLE * TURN_RATIO))
+                .strafeLeft(STRAFE_RIGHT_GO_TO_SAMPLE2)
+                .back(FORWARD_FROM_DROP)
                 .build();
 
         clawServo.setPosition(MAX_CLAW_CLOSE);
