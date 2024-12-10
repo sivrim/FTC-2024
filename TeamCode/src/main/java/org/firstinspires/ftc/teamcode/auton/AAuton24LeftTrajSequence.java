@@ -37,7 +37,7 @@ public class AAuton24LeftTrajSequence extends ArmUp {
     public static double STRAFE_LEFT_GO_TO_BASKET_SAMPLE_1 = 7;
     public static double STRAFE_RIGHT_GO_TO_SAMPLE2 = 4;
     public static double FORWARD_FROM_DROP = 8;
-    public static double BACK_STEP_3 = 16;
+    public static double BACK_STEP_3 = 15;
 
     public static double X = 22.5;
     public static double Y = 22.5;
@@ -55,7 +55,7 @@ public class AAuton24LeftTrajSequence extends ArmUp {
     SampleMecanumDrive drive;
 
     //if false, no arm and wrist movement
-    public static boolean arm = false;
+    public static boolean arm = true;
     //if false, no chassis movement
     public static boolean chassis = true;
     public static boolean april = false;
@@ -150,6 +150,8 @@ public class AAuton24LeftTrajSequence extends ArmUp {
             sleep(300);
             clawServo.setPosition(MAX_CLAW_OPEN);
         }
+
+        sleep(10000000);
 
         if(chassis) {
             drive.followTrajectorySequence(trajToSample2Pick);

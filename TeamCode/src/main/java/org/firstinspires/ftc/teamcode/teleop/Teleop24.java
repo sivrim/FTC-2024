@@ -72,9 +72,10 @@ public class Teleop24 extends LinearOpMode {
 
             float armMotor2Power = -1 * gamepad2.right_stick_y * 1;
 
-            if(armMotor2.getCurrentPosition() < -8600 && armMotor2Power > 0 ){
-                armMotor2Power = 0;
-            }
+//            if(armMotor2.getCurrentPosition() < -8600 && armMotor2Power > 0 ){
+//                armMotor2Power = 0;
+//            }
+
             armMotor2.setPower(armMotor2Power);
 
             setWrist(gamepad1);
