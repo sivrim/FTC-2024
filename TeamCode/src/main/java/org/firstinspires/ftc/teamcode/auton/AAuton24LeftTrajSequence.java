@@ -35,8 +35,8 @@ import java.util.List;
 public class AAuton24LeftTrajSequence extends ArmUp {
     public static double FORWARD_FROM_START_STEP_1 = 16;
     public static double STRAFE_LEFT_GO_TO_BASKET_SAMPLE_1 = 7;
-    public static double STRAFE_RIGHT_GO_TO_SAMPLE2 = 4;
-    public static double FORWARD_FROM_DROP = 8;
+    public static double STRAFE_RIGHT_GO_TO_SAMPLE2 = 4.5;
+    public static double FORWARD_FROM_DROP = 7;
     public static double BACK_STEP_3 = 15;
 
     public static double X = 22.5;
@@ -140,6 +140,8 @@ public class AAuton24LeftTrajSequence extends ArmUp {
             drive.followTrajectorySequence(trajToSample1Drop);
         }
 
+        armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         if(arm) {
             sleep(300);
             wristServo.setPosition(MAX_WRIST_DOWN);
@@ -151,13 +153,15 @@ public class AAuton24LeftTrajSequence extends ArmUp {
             clawServo.setPosition(MAX_CLAW_OPEN);
         }
 
-        sleep(10000000);
-
         if(chassis) {
             drive.followTrajectorySequence(trajToSample2Pick);
-            sleep(100);
-            Pose2d currentPose = readAprilTag();
-            sleep(300);
+
+            Pose2d currentPose = null;
+            if(april) {
+                sleep(100);
+                currentPose = readAprilTag();
+                sleep(300);
+            }
             if (april && currentPose != null) {
                 Pose2d sample2PickPose;
                 if (currentPose.getX() > 0) { //blue
@@ -183,14 +187,16 @@ public class AAuton24LeftTrajSequence extends ArmUp {
         }
 
         if(arm) {
-            armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int) (ARM_1_SAMPLE_PICK_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
+            sleep(2000);
             wristServo.setPosition(MAX_WRIST_DOWN);
-            sleep(10);
+            sleep(5000);
             clawServo.setPosition(MAX_CLAW_CLOSE);
+            sleep(5000);
             moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(ARM_1_SAMPLE_PICK_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
-
+            sleep(5000);
         }
+
 
         if(chassis) {
             drive.followTrajectorySequence(trajToSample2Drop);
