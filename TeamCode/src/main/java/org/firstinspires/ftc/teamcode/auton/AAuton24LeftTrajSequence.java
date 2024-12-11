@@ -44,6 +44,7 @@ public class AAuton24LeftTrajSequence extends ArmUp {
 
     public static double TURN_RATIO = 1;
     public static double ANGLE = 45;
+    public static int SLEEP_DROP = 1000;
 
     public static int SLEEP_TIME = 100;
     private ElapsedTime runtime = new ElapsedTime();
@@ -136,22 +137,22 @@ public class AAuton24LeftTrajSequence extends ArmUp {
         if(arm) {
             moveArmFromStart();
         }
-        if(chassis) {
-            drive.followTrajectorySequence(trajToSample1Drop);
-        }
 
         armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        if(arm) {
-            sleep(300);
-            wristServo.setPosition(MAX_WRIST_DOWN);
-            sleep(300);
-            moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int) (ARM_1_MOVE_BACK_BASKET_1_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
-            sleep(300);
-            wristServo.setPosition(MAX_WRIST_UP);
-            sleep(300);
-            clawServo.setPosition(MAX_CLAW_OPEN);
-        }
+        sleep(300);
+        wristServo.setPosition(MAX_WRIST_DOWN);
+        sleep(300);
+        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int) (ARM_1_MOVE_BACK_BASKET_1_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
+
+        drive.followTrajectorySequence(trajToSample1Drop);
+
+        sleep(SLEEP_DROP);
+        wristServo.setPosition(MAX_WRIST_UP);   
+        sleep(300);
+        clawServo.setPosition(MAX_CLAW_OPEN);
+
+        armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         if(chassis) {
             drive.followTrajectorySequence(trajToSample2Pick);
