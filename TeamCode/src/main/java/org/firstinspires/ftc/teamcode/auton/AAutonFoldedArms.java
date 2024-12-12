@@ -77,7 +77,7 @@ public class AAutonFoldedArms extends ArmUp {
 
         clawServo.setPosition(MAX_CLAW_CLOSE);
         //move so we do not drag the arm on floor
-        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int) (SAMPLE_1_ANGLE_AWAY_FROM_FLOOR * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
+        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int) (SAMPLE_1_ANGLE_ARM_1_AWAY_FROM_FLOOR * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
         clawServo.setPosition(MAX_CLAW_CLOSE);
 
         dropSample1(drive, trajToSample1Drop);

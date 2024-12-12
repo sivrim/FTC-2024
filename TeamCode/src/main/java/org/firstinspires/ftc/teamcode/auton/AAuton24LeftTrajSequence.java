@@ -28,17 +28,13 @@ import java.util.List;
 public class AAuton24LeftTrajSequence extends ArmUp {
     public static double FORWARD_FROM_START_STEP_1 = 16;
     public static double STRAFE_LEFT_GO_TO_BASKET_SAMPLE_1 = 7;
-    public static double STRAFE_RIGHT_GO_TO_SAMPLE2 = 4.5;
+    public static double STRAFE_RIGHT_GO_TO_SAMPLE2 = 5.0;
     public static double FORWARD_FROM_DROP = 8.5;
-    public static double BACK_STEP_3 = 17;
+    public static double BACK_STEP_3 = 16.7;
 
     public static double TURN_RATIO = 1;
     public static double ANGLE = 45;
-    public static int SLEEP_DROP = 1000;
-
-    public static double ARM_MOTOR_2_POWER = 0.7;
-
-    public static int SLEEP_TIME = 100;
+    public static int SLEEP_DROP = 500;
     private ElapsedTime runtime = new ElapsedTime();
 
     DcMotor armMotor = null;
@@ -74,7 +70,7 @@ public class AAuton24LeftTrajSequence extends ArmUp {
         wristServo.setPosition(MAX_WRIST_START);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        armMotor2.setPower(ARM_MOTOR_2_POWER);
+        //armMotor2.setPower(ARM_MOTOR_2_POWER);
 
         TrajectorySequence trajToArmStretch = drive.trajectorySequenceBuilder(new Pose2d())
                 .forward(FORWARD_FROM_START_STEP_1)
@@ -121,17 +117,19 @@ public class AAuton24LeftTrajSequence extends ArmUp {
 
         clawServo.setPosition(MAX_CLAW_CLOSE);
         //move so we do not drag the arm on floor
-        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int) (SAMPLE_1_ANGLE_AWAY_FROM_FLOOR * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
+        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int) (SAMPLE_1_ANGLE_ARM_1_AWAY_FROM_FLOOR * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
         clawServo.setPosition(MAX_CLAW_CLOSE);
 
         dropSample1(drive, trajToArmStretch, trajToSample1Drop);
 
         pickSample2(drive, trajToSample2Pick);
 
-        drive.followTrajectorySequence(trajToSample2Drop);
-
         sleep(300);
         moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(ARM_1_SAMPLE_234_DROP_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
+        sleep(300);
+
+        drive.followTrajectorySequence(trajToSample2Drop);
+
         sleep(300);
         wristServo.setPosition(MAX_WRIST_UP);
         sleep(300);
@@ -181,26 +179,21 @@ public class AAuton24LeftTrajSequence extends ArmUp {
         moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int) (ARM_1_SAMPLE_PICK_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
         sleep(400);
         clawServo.setPosition(MAX_CLAW_CLOSE);
-        sleep(500);
+        sleep(1000);
 
     }
 
     private void dropSample1(SampleMecanumDrive drive, TrajectorySequence trajToArmStretch, TrajectorySequence trajToSample1Drop) {
-        if(chassis){
-            drive.followTrajectorySequence(trajToArmStretch);
-        }
-
-        if(arm) {
-            moveArmFromStart();
-        }
+        drive.followTrajectorySequence(trajToArmStretch);
+        moveArmFromStart();
 
         armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         drive.followTrajectorySequence(trajToSample1Drop);
 
-        sleep(300);
+        sleep(200);
         wristServo.setPosition(MAX_WRIST_DOWN);
-        sleep(300);
+        sleep(200);
         armMotor.setPower(0.5);
         moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int) (SAMPLE_1_ANGLE_ARM_1_MOVE_BACK_2 * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
         sleep(SLEEP_DROP);

@@ -15,19 +15,19 @@ public class ArmUp extends LinearOpMode {
     public static double MAX_CLAW_OPEN = 0.6;//close
     public static double MAX_CLAW_CLOSE = 0.0; //actually open
     public static double MAX_WRIST_UP = 0.6;//goes up
-    public static double MAX_WRIST_DOWN = 1.0;// go toward ground
+    public static double MAX_WRIST_DOWN = 0.8;// go toward ground
     public static double MAX_WRIST_START = 0.0;
 
-    public static int SAMPLE_1_ANGLE_AWAY_FROM_FLOOR = 10;
+    public static int SAMPLE_1_ANGLE_ARM_1_AWAY_FROM_FLOOR = 30;
 
     public static int SAMPLE_1_ANGLE_ARM_2_MOVE_BACK_1 = 20;
-    public static int SAMPLE_1_ANGLE_ARM_1_MOVE_BACK_1 = 152;
+    public static int SAMPLE_1_ANGLE_ARM_1_MOVE_BACK_1 = 115;
 
-    public static int SAMPLE_1_ANGLE_ARM_2_MOVE_BACK_2 = 130;
+    public static int SAMPLE_1_ANGLE_ARM_2_MOVE_BACK_2 = 150;
     public static int SAMPLE_1_ANGLE_ARM_1_MOVE_BACK_2 = 28;
 
-    public static int ARM_1_SAMPLE_PICK_ANGLE = 127;
-    public static int ARM_1_SAMPLE_234_DROP_ANGLE = 135;
+    public static int ARM_1_SAMPLE_PICK_ANGLE = 135;
+    public static int ARM_1_SAMPLE_234_DROP_ANGLE = 122;
 
 
     public void runOpMode() {
@@ -56,7 +56,7 @@ public class ArmUp extends LinearOpMode {
         telemetry.addData("After motion, Currently at",  " at %7d ",
                 motor.getCurrentPosition());
         telemetry.update();
-        sleep(100);
+        sleep(20);
     }
 
 }
