@@ -22,17 +22,12 @@ import java.util.List;
 public class Teleop24 extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
-    DcMotor armMotor = null;
-    Servo clawServo;
-    Servo wristServo;
-    DcMotor armMotor2;
+    DcMotor armMotor = null; Servo clawServo; Servo wristServo; DcMotor armMotor2;
 
     public static double MAX_CLAW_OPEN = 0.6;
     public static double MAX_CLAW_CLOSE = 0.0;
     public static double MAX_WRIST_OPEN = 0.4;
     public static double MAX_WRIST_CLOSE = 0.8;
-    public static boolean ENABLE_GAMEPAD_2 = true;
-
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -64,8 +59,8 @@ public class Teleop24 extends LinearOpMode {
         wristServo.setPosition(MAX_WRIST_CLOSE);
 
         while (opModeIsActive()) {
-            double chassisY = getChassisY();
-            double chassisX = getChassisX();
+            double chassisY = -gamepad1.left_stick_y;
+            double chassisX = gamepad1.left_stick_x * 1.1;
             double chassisTurn = gamepad1.right_stick_x;
 
             armMotor.setPower(-1 * gamepad2.left_stick_y);
@@ -117,33 +112,18 @@ public class Teleop24 extends LinearOpMode {
 
     private void setWrist(Gamepad gamepad) {
         if(gamepad.left_trigger > 0){
-            wristServo.setPosition(MAX_CLAW_CLOSE);
+            wristServo.setPosition(MAX_WRIST_CLOSE);
         } else  if(gamepad.left_bumper){
-            wristServo.setPosition(MAX_CLAW_OPEN);
+            wristServo.setPosition(MAX_WRIST_OPEN);
         }
     }
 
     private void setClaw(Gamepad gamepad) {
-        if(gamepad.dpad_up){
-            clawServo.setPosition(MAX_WRIST_CLOSE);
-        } else  if(gamepad.dpad_down) {
-            clawServo.setPosition(MAX_WRIST_OPEN);
-        } else  if(gamepad.dpad_left) {
-            clawServo.setPosition(MAX_WRIST_OPEN + (MAX_WRIST_CLOSE - MAX_WRIST_OPEN) * 0.33);
-        }else  if(gamepad.dpad_right) {
-            clawServo.setPosition(MAX_WRIST_OPEN+ (MAX_WRIST_CLOSE - MAX_WRIST_OPEN) * 0.66);
+        if(gamepad.dpad_down){
+            clawServo.setPosition(MAX_CLAW_CLOSE);
+        }else  if(gamepad.dpad_up) {
+            clawServo.setPosition(MAX_CLAW_OPEN);
         }
     }
 
-    private double getChassisX() {
-        double chassisX = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
-        //  System.out.println("gamepad1.left_stick_x is " + chassisX);
-        return chassisX;
-    }
-
-    private double getChassisY() {
-        double chassisY = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
-        //  System.out.println("gamepad1.left_stick_y is " + chassisY);
-        return chassisY;
-    }
 }

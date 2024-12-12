@@ -15,21 +15,20 @@ public class ArmUp extends LinearOpMode {
     public static double MAX_CLAW_OPEN = 0.6;//close
     public static double MAX_CLAW_CLOSE = 0.0; //actually open
     public static double MAX_WRIST_UP = 0.6;//goes up
-    public static double MAX_WRIST_DOWN = 0.8;// go toward ground
+    public static double MAX_WRIST_DOWN = 1.0;// go toward ground
     public static double MAX_WRIST_START = 0.0;
 
-    public static int ARM_1_MOVE_UP_AT_START_ANGLE = 10;
-    public static int ARM_2_MOVE_BACK_1_ANGLE = 20;
-    public static int ARM_1_MOVE_BACK_1_ANGLE = 152;
-    public static int ARM_1_MOVE_BACK_BASKET_1_ANGLE = 43;
+    public static int SAMPLE_1_ANGLE_AWAY_FROM_FLOOR = 10;
 
-    public static int ARM_1_SAMPLE_PICK_ANGLE = 105;
+    public static int SAMPLE_1_ANGLE_ARM_2_MOVE_BACK_1 = 20;
+    public static int SAMPLE_1_ANGLE_ARM_1_MOVE_BACK_1 = 152;
 
-    public static int ARM_1_PARK_ANGLE_1 = 150;
-    public static int ARM_1_PARK_ANGLE_2 = 50;
-    public static int ARM_2_MOVE_BACK_2_ANGLE = 140;
-    public static double ARM1_POWER = 1.0;
-    public static double ARM2_POWER = 1.0;
+    public static int SAMPLE_1_ANGLE_ARM_2_MOVE_BACK_2 = 130;
+    public static int SAMPLE_1_ANGLE_ARM_1_MOVE_BACK_2 = 28;
+
+    public static int ARM_1_SAMPLE_PICK_ANGLE = 127;
+    public static int ARM_1_SAMPLE_234_DROP_ANGLE = 135;
+
 
     public void runOpMode() {
     }

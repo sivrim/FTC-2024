@@ -3,12 +3,14 @@ package org.firstinspires.ftc.teamcode.auton.april;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
@@ -25,6 +27,7 @@ import java.util.List;
 
 @Config
 @Autonomous(group = "aaa")
+@Disabled
 public class AprilTagCorrection extends ArmUp {
 
     SampleMecanumDrive drive;
@@ -126,6 +129,8 @@ public class AprilTagCorrection extends ArmUp {
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .addProcessor(aprilTag)
                 .build();
+
+//        visionPortal.getCameraControl(ExposureControl.class).setExposure()
     }
 
 
