@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.DeviceNames;
@@ -21,6 +22,7 @@ import java.util.List;
 @Config
 public class Teleop24 extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
+    TouchSensor touchSensor = null;
 
     DcMotor armMotor = null; Servo clawServo; Servo wristServo; DcMotor armMotor2;
 
@@ -41,6 +43,13 @@ public class Teleop24 extends LinearOpMode {
         clawServo = hardwareMap.servo.get(DeviceNames.SERVO_CLAW);
 
         wristServo = hardwareMap.servo.get(DeviceNames.SERVO_WRIST);
+
+        try{
+            touchSensor = hardwareMap.get(TouchSensor.class, "mag");
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
 
         // Reset the motor encoder so that it reads zero ticks
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -63,9 +72,13 @@ public class Teleop24 extends LinearOpMode {
             double chassisX = gamepad1.left_stick_x * 1.1;
             double chassisTurn = gamepad1.right_stick_x;
 
-            armMotor.setPower(-1 * gamepad2.left_stick_y);
+            if(touchSensor != null && touchSensor.isPressed() && -gamepad2.left_stick_y < 0) {
+                armMotor.setPower(0);
+            } else {
+                armMotor.setPower(-1 * gamepad2.left_stick_y);
+            }
 
-            float armMotor2Power = -1 * gamepad2.right_stick_y * 1;
+            float armMotor2Power = -1 * gamepad2.right_stick_y * .8f;
 
 //            if(armMotor2.getCurrentPosition() < -8600 && armMotor2Power > 0 ){
 //                armMotor2Power = 0;
@@ -91,19 +104,23 @@ public class Teleop24 extends LinearOpMode {
             wheels.move(chassisX, chassisY, chassisTurn);
 
             // Show the position of the motor on telemetry
-            telemetry.addData("chassis  power ", chassisX + "" +  chassisY);
-            telemetry.addData("gamepad1.left_trigger ", gamepad1.left_trigger);
-            telemetry.addData("gamepad1.left_bumper ", gamepad1.left_bumper);
+//            telemetry.addData("chassis  power ", chassisX + "" +  chassisY);
+//            telemetry.addData("gamepad1.left_trigger ", gamepad1.left_trigger);
+//            telemetry.addData("gamepad1.left_bumper ", gamepad1.left_bumper);
+//
+//            telemetry.addData("gamepad1.dpad_up ", gamepad1.dpad_up);
+//            telemetry.addData("gamepad1.dpad_down ", gamepad1.dpad_down);
+//
+//            telemetry.addData("chassis  power ", chassisX + "" +  chassisY);
+//            telemetry.addData("gamepad2.left_trigger ", gamepad2.left_trigger);
+//            telemetry.addData("gamepad2.left_bumper ", gamepad2.left_bumper);
+//
+//            telemetry.addData("gamepad2.dpad_up ", gamepad2.dpad_up);
+//            telemetry.addData("gamepad2.dpad_down ", gamepad2.dpad_down);
 
-            telemetry.addData("gamepad1.dpad_up ", gamepad1.dpad_up);
-            telemetry.addData("gamepad1.dpad_down ", gamepad1.dpad_down);
-
-            telemetry.addData("chassis  power ", chassisX + "" +  chassisY);
-            telemetry.addData("gamepad2.left_trigger ", gamepad2.left_trigger);
-            telemetry.addData("gamepad2.left_bumper ", gamepad2.left_bumper);
-
-            telemetry.addData("gamepad2.dpad_up ", gamepad2.dpad_up);
-            telemetry.addData("gamepad2.dpad_down ", gamepad2.dpad_down);
+            if(touchSensor != null){
+                telemetry.addData("magnetic distance ", touchSensor.isPressed());
+            }
 
             telemetry.update();
 

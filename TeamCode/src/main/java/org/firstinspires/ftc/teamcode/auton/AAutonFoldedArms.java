@@ -84,13 +84,13 @@ public class AAutonFoldedArms extends ArmUp {
 
             drive.followTrajectorySequence(trajToSample2Pick);
 
-            moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int) (ARM_1_SAMPLE_PICK_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
+            moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int) (SAMPLE_2_ARM_1_SAMPLE_PICK_ANGLE_1 * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
             sleep(200);
             wristServo.setPosition(MAX_WRIST_DOWN);
             sleep(500);
             clawServo.setPosition(MAX_CLAW_CLOSE);
             sleep(500);
-            moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(ARM_1_SAMPLE_234_DROP_ANGLE * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
+            moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(SAMPLE_2_ARM_1_DROP_ANGLE_1 * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
             sleep(500);
 
 
