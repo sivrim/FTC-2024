@@ -18,11 +18,11 @@ import org.firstinspires.ftc.teamcode.config.ArmUpRightAuton;
 public class AAuton24Right extends ArmUpRightAuton {
     private ElapsedTime runtime = new ElapsedTime();DcMotor armMotor = null;Servo clawServo;Servo wristServo;DcMotor armMotor2;
 
-    public static double FORWARD_FROM_START_STEP_1 = 4;
-    public static double STRAFE_LEFT_STRAFE_STEP_2 = 18;
-    public static double FORWARD_TO_BAR_3 = 25.5;
-    public static double BACK_STEP_4 = 28;
-    public static double STRAFE_RIGHT_STEP_5 = 60;
+    public static double STEP_1_FORWARD_FROM_START = 4;
+    public static double STEP_2_STRAFE_LEFT = 18;
+    public static double STEP_3_FORWARD_TO_BAR = 25.5;
+    public static double STEP_4_BACK = 28;
+    public static double STEP_5_STRAFE_RIGHT_TO_PARK = 60;
     @Override
     public void runOpMode() {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -31,11 +31,11 @@ public class AAuton24Right extends ArmUpRightAuton {
         clawServo.setPosition(MAX_CLAW_CLOSE);
         wristServo.setPosition(MAX_WRIST_START);
 
-        Trajectory trajectoryForwardFromStart = drive.trajectoryBuilder(new Pose2d()).forward(FORWARD_FROM_START_STEP_1).build();
-        Trajectory trajectoryStrafeLeft = drive.trajectoryBuilder(trajectoryForwardFromStart.end()).strafeLeft(STRAFE_LEFT_STRAFE_STEP_2).build();
-        Trajectory trajectoryForwardToBar = drive.trajectoryBuilder(trajectoryStrafeLeft.end()).forward(FORWARD_TO_BAR_3).build();
-        Trajectory trajectoryGoBack = drive.trajectoryBuilder(trajectoryForwardToBar.end()).back(BACK_STEP_4).build();
-        Trajectory trajectoryPark = drive.trajectoryBuilder(trajectoryGoBack.end()).strafeRight(STRAFE_RIGHT_STEP_5).build();
+        Trajectory trajectoryForwardFromStart = drive.trajectoryBuilder(new Pose2d()).forward(STEP_1_FORWARD_FROM_START).build();
+        Trajectory trajectoryStrafeLeft = drive.trajectoryBuilder(trajectoryForwardFromStart.end()).strafeLeft(STEP_2_STRAFE_LEFT).build();
+        Trajectory trajectoryForwardToBar = drive.trajectoryBuilder(trajectoryStrafeLeft.end()).forward(STEP_3_FORWARD_TO_BAR).build();
+        Trajectory trajectoryGoBack = drive.trajectoryBuilder(trajectoryForwardToBar.end()).back(STEP_4_BACK).build();
+        Trajectory trajectoryPark = drive.trajectoryBuilder(trajectoryGoBack.end()).strafeRight(STEP_5_STRAFE_RIGHT_TO_PARK).build();
 
         waitForStart();if(isStopRequested()) return;
 
