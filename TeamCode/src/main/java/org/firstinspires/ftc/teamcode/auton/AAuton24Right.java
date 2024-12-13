@@ -28,7 +28,8 @@ public class AAuton24Right extends ArmUpRightAuton {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         armMotor = hardwareMap.get(DcMotor.class, DeviceNames.MOTOR_ARM); armMotor2 = hardwareMap.get(DcMotor.class, DeviceNames.MOTOR_ARM2);
         clawServo = hardwareMap.get(Servo.class, DeviceNames.SERVO_CLAW);wristServo = hardwareMap.get(Servo.class, DeviceNames.SERVO_WRIST);
-        clawServo.setPosition(MAX_CLAW_CLOSE);wristServo.setPosition(MAX_WRIST_UP);
+        clawServo.setPosition(MAX_CLAW_CLOSE);
+        wristServo.setPosition(MAX_WRIST_START);
 
         Trajectory trajectoryForwardFromStart = drive.trajectoryBuilder(new Pose2d()).forward(FORWARD_FROM_START_STEP_1).build();
         Trajectory trajectoryStrafeLeft = drive.trajectoryBuilder(trajectoryForwardFromStart.end()).strafeLeft(STRAFE_LEFT_STRAFE_STEP_2).build();
@@ -38,19 +39,18 @@ public class AAuton24Right extends ArmUpRightAuton {
 
         waitForStart();if(isStopRequested()) return;
 
-        // arm 1 --> goes down by default                        // arm 2 --> goes back by default
-
-
         moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_2_MOVE_UP_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor2, runtime);
-        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_1_MOVE_UP_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor, runtime);
+        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(ARM_1_MOVE_UP_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor, runtime);
         wristServo.setPosition(MAX_WRIST_DOWN);
+
+        sleep(500);
 
         drive.followTrajectory(trajectoryForwardFromStart);
         drive.followTrajectory(trajectoryStrafeLeft);
         sleep(500);
         drive.followTrajectory(trajectoryForwardToBar);
         sleep(500);
-        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(ARM_1_MOVE_DOWN_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor, runtime);
+        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int)(ARM_1_MOVE_DOWN_1_ANGLE * ARM2_ANGLE_TO_ENCODER), armMotor, runtime);
         sleep(500);
         clawServo.setPosition(MAX_CLAW_OPEN);
         sleep(500);
