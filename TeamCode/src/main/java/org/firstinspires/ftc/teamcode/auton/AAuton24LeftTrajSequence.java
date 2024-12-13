@@ -34,9 +34,12 @@ public class AAuton24LeftTrajSequence extends ArmUp {
     Rev2mDistanceSensor distanceSensor = null;
     public static double STRAFE_RIGHT_GO_TO_SAMPLE2 = 5.0;
     public static double FORWARD_FROM_DROP = 9.5;
-    public static double BACK_STEP_3 = 16.7;
+    public static double BACK_STEP_3 = 16;
     public static double BACK_STEP_4 = 2.0;
 
+    public static double APRIL_X = 54.9;
+    public static double APRIL_Y = 55.7;
+    public static double APRIL_ANGLE = 120.5;
     public static double TURN_RATIO = 1;
     public static double ANGLE = 45;
 
@@ -156,7 +159,10 @@ public class AAuton24LeftTrajSequence extends ArmUp {
 
         sleep(350);
         clawServo.setPosition(MAX_CLAW_OPEN);
-        sleep(600);
+        sleep(500);
+        drive.followTrajectorySequence(trajToSample3Pick);
+//        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int) (SAMPLE_2_ARM_1_SAMPLE_PICK_ANGLE_1 * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
+//        wristServo.setPosition(MAX_WRIST_DOWN);
     }
 
     private void pickSample2(SampleMecanumDrive drive, TrajectorySequence trajToSample2Pick) {
@@ -175,9 +181,11 @@ public class AAuton24LeftTrajSequence extends ArmUp {
             } else { //red
                 sample2PickPose = new Pose2d(-53.9, -55, 60);
             }
+
             Pose2d correction = sample2PickPose.minus(currentPose);
             printPose2d("desired pose is ", sample2PickPose);
             printPose2d("current pose from april tag isc", currentPose);
+
             printPose2d("correction is ", correction);
             telemetry.update();
 
