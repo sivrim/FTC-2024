@@ -30,7 +30,7 @@ public class ArmUp extends LinearOpMode {
     public static int SAMPLE_1_ANGLE_ARM_1_MOVE_BACK_1 = 182;
 
     public static int SAMPLE_1_ANGLE_ARM_2_MOVE_BACK_2 = 155;
-    public static int SAMPLE_1_ANGLE_ARM_1_MOVE_BACK_2 = 65;
+    public static int SAMPLE_1_ANGLE_ARM_1_MOVE_BACK_2 = 55;
 
     public static int SAMPLE_2_ARM_1_SAMPLE_PICK_ANGLE_1 = 128;
     public static int SAMPLE_2_ARM_1_DROP_ANGLE_1 = 110;

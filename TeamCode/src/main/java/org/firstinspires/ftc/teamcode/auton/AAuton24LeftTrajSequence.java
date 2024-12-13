@@ -161,8 +161,8 @@ public class AAuton24LeftTrajSequence extends ArmUp {
         clawServo.setPosition(MAX_CLAW_OPEN);
         sleep(500);
         drive.followTrajectorySequence(trajToSample3Pick);
-        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int) (SAMPLE_2_ARM_1_SAMPLE_PICK_ANGLE_1 * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
-        wristServo.setPosition(MAX_WRIST_DOWN);
+//        moveArmToPosition(DcMotorSimple.Direction.REVERSE, (int) (SAMPLE_2_ARM_1_SAMPLE_PICK_ANGLE_1 * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
+//        wristServo.setPosition(MAX_WRIST_DOWN);
     }
 
     private void pickSample2(SampleMecanumDrive drive, TrajectorySequence trajToSample2Pick) {
