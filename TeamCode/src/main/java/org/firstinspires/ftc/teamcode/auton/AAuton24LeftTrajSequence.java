@@ -35,19 +35,14 @@ public class AAuton24LeftTrajSequence extends ArmUp {
     public static double STRAFE_RIGHT_GO_TO_SAMPLE2 = 5.0;
     public static double FORWARD_FROM_DROP = 9.5;
     public static double BACK_STEP_3 = 16.7;
+    public static double BACK_STEP_4 = 2.0;
 
     public static double TURN_RATIO = 1;
     public static double ANGLE = 45;
-    public static int SLEEP_DROP = 50;
 
-//    public static double APRIL_X =
-
-    public static double ARM_MOTOR_2_POWER = 0.7;
-
-    public static int SLEEP_TIME = 100;
     private ElapsedTime runtime = new ElapsedTime();
 
-    private double ARM_BASKET_POWER = 0.5;
+    private double ARM_BASKET_POWER = 1.0;
 
     DcMotor armMotor = null;
     Servo clawServo;
@@ -69,7 +64,7 @@ public class AAuton24LeftTrajSequence extends ArmUp {
     private AprilTagProcessor aprilTag;
 
     private VisionPortal visionPortal;
-
+    TrajectorySequence trajToSample1DropAfterDistanceSensor;
 
     @Override
     public void runOpMode() {
@@ -88,8 +83,6 @@ public class AAuton24LeftTrajSequence extends ArmUp {
             ex.printStackTrace();
         }
 
-        //armMotor2.setPower(ARM_MOTOR_2_POWER);
-
         TrajectorySequence trajToArmStretch = drive.trajectorySequenceBuilder(new Pose2d())
                 .forward(FORWARD_FROM_START_STEP_1)
                 .strafeLeft(STRAFE_LEFT_GO_TO_BASKET_SAMPLE_1)
@@ -100,7 +93,11 @@ public class AAuton24LeftTrajSequence extends ArmUp {
                 .back(BACK_STEP_3)
                 .build();
 
-        TrajectorySequence trajToSample2Pick = drive.trajectorySequenceBuilder(trajToSample1Drop.end())
+        TrajectorySequence trajToSample1DropAfterDistanceSensor = drive.trajectorySequenceBuilder(trajToSample1Drop.end())
+                .back(BACK_STEP_4)
+                .build();
+
+        TrajectorySequence trajToSample2Pick = drive.trajectorySequenceBuilder(trajToSample1DropAfterDistanceSensor.end())
                 .forward(FORWARD_FROM_DROP)
                 .turn(Math.toRadians(ANGLE * TURN_RATIO))
                 .strafeRight(STRAFE_RIGHT_GO_TO_SAMPLE2)
@@ -147,19 +144,15 @@ public class AAuton24LeftTrajSequence extends ArmUp {
 
         pickSample2(drive, trajToSample2Pick);
 
-        sleep(500);
-
-        drive.followTrajectorySequence(trajToSample2Drop);
         sleep(50);
-        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(SAMPLE_2_ARM_1_DROP_ANGLE_1 * ARM1_ANGLE_TO_ENCODER), armMotor, runtime, distanceSensor, ARM_BASKET_POWER);
-        telemetry.addLine("arm in position to drop sample 2");
-        telemetry.update();
+        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(SAMPLE_2_ARM_1_DROP_ANGLE_1 * ARM1_ANGLE_TO_ENCODER), armMotor, runtime);
+        drive.followTrajectorySequence(trajToSample2Drop);
+        moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int)(SAMPLE_2_ARM_1_DROP_ANGLE_2 * ARM1_ANGLE_TO_ENCODER), armMotor, runtime, distanceSensor, ARM_BASKET_POWER);
 
-        sleep(1000);
+        sleep(800);
         wristServo.setPosition(MAX_WRIST_UP);
 
         telemetry.addLine("wrist open ");
-        telemetry.update();
 
         sleep(350);
         clawServo.setPosition(MAX_CLAW_OPEN);
@@ -178,7 +171,7 @@ public class AAuton24LeftTrajSequence extends ArmUp {
         if (april && currentPose != null) {
             Pose2d sample2PickPose;
             if (currentPose.getX() > 0) { //blue
-                sample2PickPose = new Pose2d(54.9, 55.1, -120.5);
+                sample2PickPose = new Pose2d(54.9, 55.7, -120.5);
             } else { //red
                 sample2PickPose = new Pose2d(-53.9, -55, 60);
             }
@@ -214,27 +207,20 @@ public class AAuton24LeftTrajSequence extends ArmUp {
     private void dropSample1(SampleMecanumDrive drive, TrajectorySequence trajToArmStretch, TrajectorySequence trajToSample1Drop) {
 
         drive.followTrajectorySequence(trajToArmStretch);
-        telemetry.addLine("trajToArmStretch complete");
-        telemetry.update();
         moveArmFromStart();
-        telemetry.addLine("move arm from start complete");
-        telemetry.update();
         armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         drive.followTrajectorySequence(trajToSample1Drop);
-        telemetry.addLine("trajToSample1Drop complete");
-        telemetry.update();
 
         sleep(100);
         wristServo.setPosition(MAX_WRIST_DOWN);
         sleep(100);
-//        armMotor.setPower(0.5);
         moveArmToPosition(DcMotorSimple.Direction.FORWARD, (int) (SAMPLE_1_ANGLE_ARM_1_MOVE_BACK_2 * ARM1_ANGLE_TO_ENCODER), armMotor, runtime, distanceSensor, ARM_BASKET_POWER);
-        sleep(1500);
+        drive.followTrajectorySequence(trajToSample1DropAfterDistanceSensor);
+        sleep(2000);
         wristServo.setPosition(MAX_WRIST_UP);
-        sleep(200);
+        sleep(300);
         clawServo.setPosition(MAX_CLAW_OPEN);
-//        armMotor.setPower(1.0);
         armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 

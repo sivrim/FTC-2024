@@ -57,15 +57,15 @@ public class Teleop24 extends LinearOpMode {
         armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         armMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        clawServo.setPosition(MAX_CLAW_CLOSE);
-        wristServo.setPosition(MAX_WRIST_CLOSE);
+//        clawServo.setPosition(MAX_CLAW_CLOSE);
+//        wristServo.setPosition(MAX_WRIST_CLOSE);
 
         waitForStart();
 
         if (isStopRequested()) return;
 
-        clawServo.setPosition(MAX_CLAW_CLOSE);
-        wristServo.setPosition(MAX_WRIST_CLOSE);
+//        clawServo.setPosition(MAX_CLAW_CLOSE);
+//        wristServo.setPosition(MAX_WRIST_CLOSE);
 
         while (opModeIsActive()) {
             double chassisY = -gamepad1.left_stick_y;

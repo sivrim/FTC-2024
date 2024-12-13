@@ -29,11 +29,11 @@ public class ArmUp extends LinearOpMode {
     public static int SAMPLE_1_ANGLE_ARM_2_MOVE_BACK_1 = 15;
     public static int SAMPLE_1_ANGLE_ARM_1_MOVE_BACK_1 = 182;
 
-    public static int SAMPLE_1_ANGLE_ARM_2_MOVE_BACK_2 = 150;
-    public static int SAMPLE_1_ANGLE_ARM_1_MOVE_BACK_2 = 48;
+    public static int SAMPLE_1_ANGLE_ARM_2_MOVE_BACK_2 = 155;
+    public static int SAMPLE_1_ANGLE_ARM_1_MOVE_BACK_2 = 52;
 
-    public static int SAMPLE_2_ARM_1_SAMPLE_PICK_ANGLE_1 = 115;
-    public static int SAMPLE_2_ARM_1_DROP_ANGLE_1 = 145;
+    public static int SAMPLE_2_ARM_1_SAMPLE_PICK_ANGLE_1 = 128;
+    public static int SAMPLE_2_ARM_1_DROP_ANGLE_1 = 110;
     public static int SAMPLE_2_ARM_1_DROP_ANGLE_2 = 30;
 
     public static double DROP_SENSOR_DISTANCE = 4.5;
@@ -67,6 +67,7 @@ public class ArmUp extends LinearOpMode {
                 double distance = distanceSensor.getDistance(DistanceUnit.INCH);
 
                 if(distance < 15){
+                    System.out.println("Distance is ........ " + distance);
                     telemetry.addData("Distance is ........ ", distance);
                     break;
                 }
@@ -81,7 +82,7 @@ public class ArmUp extends LinearOpMode {
         }
 
         telemetry.addData("After motion, Currently at " , motor.getCurrentPosition());
-        telemetry.update();
+
         sleep(TEST_SLEEP_TIME_AFTER_ARM_MOVE);
     }
 
