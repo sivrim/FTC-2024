@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.auton;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -15,6 +16,7 @@ import org.firstinspires.ftc.teamcode.rr.trajectorysequence.TrajectorySequence;
 
 @Config
 @Autonomous(group = "aaa")
+@Disabled
 public class AAutonFoldedArms extends ArmUp {
     public static double SAMPLE_1_DROP_FORWARD_FROM_START_STEP_1 = 16;
     public static double SAMPLE_1_DROP_LEFT_GO_TO_BASKET_STEP_2 = 7;
