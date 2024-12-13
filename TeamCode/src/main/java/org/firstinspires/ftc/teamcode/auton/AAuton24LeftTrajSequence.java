@@ -34,7 +34,7 @@ public class AAuton24LeftTrajSequence extends ArmUp {
     Rev2mDistanceSensor distanceSensor = null;
     public static double STRAFE_RIGHT_GO_TO_SAMPLE2 = 5.0;
     public static double FORWARD_FROM_DROP = 9.5;
-    public static double BACK_STEP_3 = 16.7;
+    public static double BACK_STEP_3 = 16;
     public static double BACK_STEP_4 = 2.0;
 
     public static double APRIL_X = 54.9;
@@ -177,14 +177,15 @@ public class AAuton24LeftTrajSequence extends ArmUp {
         if (april && currentPose != null) {
             Pose2d sample2PickPose;
             if (currentPose.getX() > 0) { //blue
-                sample2PickPose = new Pose2d(APRIL_X, APRIL_Y, -1 * APRIL_ANGLE);
+                sample2PickPose = new Pose2d(54.9, 55.7, -120.5);
             } else { //red
-                sample2PickPose = new Pose2d(-1 * APRIL_X, -1 * APRIL_Y, APRIL_ANGLE);
+                sample2PickPose = new Pose2d(-53.9, -55, 60);
             }
 
             Pose2d correction = sample2PickPose.minus(currentPose);
             printPose2d("desired pose is ", sample2PickPose);
             printPose2d("current pose from april tag isc", currentPose);
+
             printPose2d("correction is ", correction);
             telemetry.update();
 
