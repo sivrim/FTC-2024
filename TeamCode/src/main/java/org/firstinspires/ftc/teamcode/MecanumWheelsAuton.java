@@ -125,7 +125,7 @@ public class MecanumWheelsAuton {
         telemetry.addData("power ", "before set power");
         telemetry.update();
 
-        sleep(2000);
+        sleep(100);
 
         setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower, powerRatio);
         runtime.reset();

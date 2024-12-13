@@ -20,11 +20,11 @@ public class EncoderOpmode extends LinearOpMode {
     public static double CPR = 537;
     public static String motorName = DeviceNames.MOTOR_ARM2;
 
-
     @Override
     public void runOpMode() throws InterruptedException {
         // Find a motor in the hardware map named "Arm Motor"
         DcMotor motor = hardwareMap.dcMotor.get(motorName);
+
 
         // Reset the motor encoder so that it reads zero ticks
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
