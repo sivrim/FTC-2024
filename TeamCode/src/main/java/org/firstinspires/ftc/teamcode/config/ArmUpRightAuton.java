@@ -8,24 +8,19 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Config
 public class ArmUpRightAuton extends LinearOpMode {
-    public static double ARM1_ANGLE_TO_ENCODER = 3 * 8375/90;
-    public static double ARM2_ANGLE_TO_ENCODER = 2680/90;
+    public static double ARM1_ANGLE_TO_ENCODER = 3287/90;
+    public static double ARM2_ANGLE_TO_ENCODER = 1380/90;
 
 
-    public static double MAX_CLAW_OPEN = 1.0;
-    public static double MAX_CLAW_CLOSE = 0.1;
-    public static double MAX_WRIST_UP = 0.0;
-    public static double MAX_WRIST_DOWN = 1.0;
-    public static double MAX_WRIST_DROP = 0.6;
-    public static double TURN_M50 = -50;
-
-    public static double TURN_RESET = 0;
+    public static double MAX_CLAW_OPEN = 0.6;//close
+    public static double MAX_CLAW_CLOSE = 0.0; //actually open
+    public static double MAX_WRIST_UP = 0.6;//goes up
+    public static double MAX_WRIST_DOWN = 0.8;// go toward ground
+    public static double MAX_WRIST_START = 0.0;
 
     public static double TURN_90 = 90;
 
     public static double TURN_M90 = -90;
-
-    public static double TURN_45 = 45;
 
     public static int ARM_1_MOVE_UP_1_ANGLE = 105;
     public static int ARM_1_MOVE_DOWN_1_ANGLE = 90;
